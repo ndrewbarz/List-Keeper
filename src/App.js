@@ -6,7 +6,7 @@ import { useDispatch } from "react-redux";
 import { AuthActionCreators } from "./store/reducers/auth/action-creators";
 import { useNavigate } from "react-router-dom";
 import { Wrapper } from "./styled/style";
-import Drawer from "./components/Drawer";
+import Drawer from "./components/Navigation/Drawer";
 import NavigationContainer from "./components/Navigation/NavigationContainer";
 
 const GlobalStyle = createGlobalStyle`

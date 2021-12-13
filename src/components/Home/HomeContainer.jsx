@@ -1,24 +1,20 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { FilterActionCreators } from "../store/reducers/filter/action-creator";
-import { ListsActionCreators } from "../store/reducers/userData/action-creators";
+import { FilterActionCreators } from "../../store/reducers/filter/action-creator";
+import { ListsActionCreators } from "../../store/reducers/userData/action-creators";
 import {
-  CardItem,
   FilterRemoveButtonStyled,
   FilterRemoveIconStyled,
-  Label,
   LoadersStyled,
   RemoveFilterBox,
-  ShareLink,
-  TextStyled,
-} from "../styled/style";
-import Card from "./Card";
-import Modal from "./Modal";
-import { getDate } from "../utils/getDate";
-import { shareList } from "../utils/shareList";
+} from "../../styled/style";
+import Modal from "../Modal";
+import { getDate } from "../../utils/getDate";
+import { shareList } from "../../utils/shareList";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
+import Home from "./Home";
 
-const Home = () => {
+const HomeContainer = () => {
   const dispatch = useDispatch();
   const { id } = useSelector((state) => state.auth.user);
   const { lists, current, loading, searchText } = useSelector(
@@ -34,7 +30,6 @@ const Home = () => {
   const [listItem, setInputList] = useState(current?.listItem || []);
   const [isCompleteItems, setIsCompleteItems] = useState([]);
   const [isFavorites, setIsFavorites] = useState(false);
-  const [filtered, setFiltered] = useState(filter);
 
   //* generate inputs
   const handleInputChange = (idx, e) => {
@@ -127,16 +122,17 @@ const Home = () => {
     dispatch(ListsActionCreators.setCurrentList(list));
   };
 
-  // Filtering lists by date and search text
-  const filteredListsByDateOrText = useMemo(() => {
+  // Filtering lists by date, search text or is favorites
+  const filteredCards = useMemo(() => {
     if (lists) {
       return lists.filter(
         (list) =>
           list.listTitle.toLowerCase().includes(searchText.toLowerCase()) &&
-          (filterByDate !== "" ? list.date === filterByDate : lists)
+          (filterByDate !== "" ? list.date === filterByDate : true) &&
+          (filter ? list.isFavorites : true)
       );
     }
-  }, [filterByDate, lists, searchText]);
+  }, [filterByDate, lists, searchText, filter]);
 
   const clearFilterDateHandler = () => {
     dispatch(FilterActionCreators.clearFilterDate());
@@ -164,10 +160,6 @@ const Home = () => {
   }, [lists]);
 
   useEffect(() => {
-    setFiltered(filter);
-  }, [filter]);
-
-  useEffect(() => {
     if (current) {
       setListTitle(current?.listTitle);
       setCategory(current?.category);
@@ -175,116 +167,26 @@ const Home = () => {
       setIsFavorites(current?.isFavorites);
     }
   }, [current]);
-
   return (
     <>
       {loading && (
         <LoadersStyled type="Rings" color="#00BFFF" height={80} width={80} />
       )}
-      <RemoveFilterBox>
-        {filterByDate ? (
-          <FilterRemoveButtonStyled onClick={clearFilterDateHandler}>
-            {filterByDate} <FilterRemoveIconStyled icon={faTimes} />
-          </FilterRemoveButtonStyled>
-        ) : null}
-        {searchText !== "" ? (
-          <FilterRemoveButtonStyled onClick={clearSearchTextHandler}>
-            <span style={{ marginRight: "7px" }}>{searchText}</span>{" "}
-            <FilterRemoveIconStyled icon={faTimes} />
-          </FilterRemoveButtonStyled>
-        ) : null}
-      </RemoveFilterBox>
-      {filteredListsByDateOrText.length ? (
-        filteredListsByDateOrText?.map((list) =>
-          filtered ? (
-            list.isFavorites && (
-              <Card
-                key={list._id}
-                isFavorites={list.isFavorites}
-                id={list._id}
-                list={list}
-                onEdit={() => handleEdit(list)}
-                onDelete={() => handleDelete(list._id)}
-                onToggle={() => handleToggle(list._id)}
-                thunk={ListsActionCreators.updateList}
-              >
-                {isToggle.includes(list._id) &&
-                  list.listItem.map((item) => (
-                    <CardItem key={item.id}>
-                      <Label htmlFor={item.id} isComplete={item.isComplete}>
-                        {item.itemValue}
-                        <input
-                          type="checkbox"
-                          key={item.id}
-                          id={item.id}
-                          value={item.id}
-                          checked={isCompleteItems.includes(item.id)}
-                          onChange={(e) => handleCheckbox(e, list)}
-                        />
-                      </Label>
-                    </CardItem>
-                  ))}
-                <ShareLink
-                  rel="noreferrer"
-                  target="_blank"
-                  href={`https://t.me/share/url?url=${shareList(
-                    list.listTitle,
-                    list.category,
-                    list.date,
-                    list.listItem
-                  )}`}
-                >
-                  Share
-                </ShareLink>
-              </Card>
-            )
-          ) : (
-            <Card
-              key={list._id}
-              isFavorites={list.isFavorites}
-              id={list._id}
-              list={list}
-              onEdit={() => handleEdit(list)}
-              onDelete={() => handleDelete(list._id)}
-              onToggle={() => handleToggle(list._id)}
-              thunk={ListsActionCreators.updateList}
-            >
-              {isToggle.includes(list._id) &&
-                list.listItem.map((item) => (
-                  <CardItem key={item.id}>
-                    <Label htmlFor={item.id} isComplete={item.isComplete}>
-                      {item.itemValue}
-                      <input
-                        type="checkbox"
-                        key={item.id}
-                        id={item.id}
-                        value={item.id}
-                        checked={isCompleteItems.includes(item.id)}
-                        onChange={(e) => handleCheckbox(e, list)}
-                      />
-                    </Label>
-                  </CardItem>
-                ))}
-              <ShareLink
-                rel="noreferrer"
-                target="_blank"
-                href={`https://t.me/share/url?url=${shareList(
-                  list.listTitle,
-                  list.date,
-                  list.category,
-                  list.listItem
-                )}`}
-              >
-                Share
-              </ShareLink>
-            </Card>
-          )
-        )
-      ) : (
-        <TextStyled color="#fff">
-          {searchText ? "Nothing found" : "Please add Your first list"}
-        </TextStyled>
-      )}
+
+      <Home
+        filteredCards={filteredCards}
+        onEdit={handleEdit}
+        onDelete={handleDelete}
+        onToggle={handleToggle}
+        isToggle={isToggle}
+        isCompleteItems={isCompleteItems}
+        handleCheckbox={handleCheckbox}
+        shareList={shareList}
+        searchText={searchText}
+        filterByDate={filterByDate}
+        clearFilterDateHandler={clearFilterDateHandler}
+        clearSearchTextHandler={clearSearchTextHandler}
+      />
 
       {/* //* EDIT MODAL */}
       <Modal
@@ -305,4 +207,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default HomeContainer;

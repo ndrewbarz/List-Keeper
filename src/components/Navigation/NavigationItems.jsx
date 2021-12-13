@@ -8,6 +8,11 @@ import Link, {
   NavTitleStyled,
   CalendarIcon,
   LogoIcon,
+  NavIconsBox,
+  LogoutBox,
+  LogoutName,
+  LogoText,
+  DrawerButton,
 } from "../../styled/style";
 import plus from "../../assets/add.png";
 import logOut from "../../assets/logout.png";
@@ -20,6 +25,8 @@ import Button from "../Button";
 
 import SearchBar from "../SearchBar";
 import Calendar from "../Calendar";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBars } from "@fortawesome/free-solid-svg-icons";
 
 const NavigationItems = ({
   isAuth,
@@ -34,14 +41,18 @@ const NavigationItems = ({
   toggleModal,
   user,
   handleLogout,
+  showSidebar,
 }) => {
   return (
     <>
       {isAuth ? (
-        <Container>
+        <>
+          <DrawerButton onClick={showSidebar}  >
+            {showSidebar && <FontAwesomeIcon icon={faBars} />}
+          </DrawerButton>
           <NavTitleStyled>
             <LogoIcon src={logoIcon} />
-            List Keeper
+            <LogoText>List Keeper</LogoText>
           </NavTitleStyled>
           <SearchBar
             type="text"
@@ -49,7 +60,7 @@ const NavigationItems = ({
             placeholder="Type to search by Title"
             onChange={handleSearch}
           />
-          <div>
+          <NavIconsBox>
             <CalendarIcon
               src={calendarIcon}
               width="25px"
@@ -90,15 +101,15 @@ const NavigationItems = ({
                 onClick={toggleModal}
               />
             )}
-          </div>
+          </NavIconsBox>
 
-          <div style={{ display: "flex", alignItems: "center" }}>
-            <span>{user.email}</span>
+          <LogoutBox>
+            <LogoutName>{user.email}</LogoutName>
             <Link to={"/login"}>
               <LogoutIcon src={logOut} width="25px" onClick={handleLogout} />
             </Link>
-          </div>
-        </Container>
+          </LogoutBox>
+        </>
       ) : (
         <>
           <Button>

@@ -107,12 +107,25 @@ export const NavTitleStyled = styled.p`
   align-items: center;
 
   @media ${device.tablet} {
-    margin: 40px 0;
+    // margin: 40px 0;
   }
 `;
 
-// drawer
+export const NavIconsBox = styled.div`
+  // @media ${device.tablet} {
+  //   display: none;
+  // }
+`;
 
+export const LogoutBox = styled.div`
+  display: flex;
+  align-items: center;
+`;
+export const LogoutName = styled.span``;
+
+export const LogoText = styled.span``;
+
+// drawer
 export const DrawerStyled = styled.div`
   height: 100%;
   width: 300px;
@@ -127,10 +140,14 @@ export const DrawerStyled = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+`;
 
-  @media ${device.tablet} {
-    color: #fff;
-  }
+export const DrawerButton = styled.div`
+  display: block;
+  margin: 15px 10px;
+  color: red;
+  z-index: 99999;
+  position: absolute;
 `;
 
 // calendar
@@ -163,10 +180,6 @@ export const Container = styled.div`
   justify-content: space-around;
   margin: 0 auto;
   align-items: center;
-
-  @media ${device.tablet} {
-    flex-direction: column;
-  }
 `;
 
 export const Wrapper = styled.div`
@@ -190,11 +203,6 @@ export const SearchBarBoxStyled = styled.div`
   max-width: 300px;
   margin-right: 100px;
   position: relative;
-
-  @media ${device.tablet} {
-    max-width: 200px;
-    margin: 0 0 20px 0;
-  }
 `;
 
 export const SearchBarStyled = styled.input`
@@ -216,12 +224,82 @@ export const SearchBarStyled = styled.input`
   :focus::placeholder {
     color: transparent;
   }
+`;
 
+//! MEDIA
+export const ContainerNav = styled(Navigation)`
   @media ${device.tablet} {
-    width: 200px;
-    margin-right: 0;
+    justify-content: space-around;
+  }
+  @media ${device.desktop} {
+    ${DrawerButton} {
+      display: none;
+    }
+  }
+  @media ${device.tablet} {
+    ${NavIconsBox}, ${LogoutName} {
+      display: none;
+    }
+    ${DrawerButton} {
+      display: block;
+      z-index: 999999;
+    }
+    ${DrawerStyled} {
+      color: #fff;
+    }
+    ${Container} {
+      flex-direction: column;
+    }
+  }
+
+  @media ${device.mobileL} {
+    ${NavIconsBox}, ${LogoutBox}, ${LogoText}, ${NavTitleStyled} {
+      display: none;
+    }
+    ${DrawerStyled} {
+      color: #fff;
+      width: 100%;
+    }
+    ${DrawerButton} {
+      display: block;
+      z-index: 999999;
+    }
+    ${SearchBarBoxStyled} {
+      max-width: 250px;
+      margin: 5px auto;
+    }
+    ${SearchBarStyled} {
+      max-width: 230px;
+    }
+    ${SearchBarIconStyled} {
+      top: 8px;
+      right: 10px;
+    }
   }
 `;
+
+export const ContainerDrawer = styled(DrawerStyled)`
+  color: #fff;
+  // width: 100%;
+  @media ${device.tablet} {
+    ${DrawerButton} {
+      display: block;
+    }
+  }
+  @media ${device.mobileL} {
+    ${DrawerButton} {
+      display: block;
+      top: 0;
+      right: 0;
+    }
+    ${SearchBarStyled} {
+      margin: 25px 0;
+    }
+    width: 100%;
+  }
+`;
+
+//! END MEDIA
 
 // Form
 export const FormStyled = styled.form`

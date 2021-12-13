@@ -1,12 +1,6 @@
 import React from "react";
-import Home from "../components/Home";
+import HomeContainer from "../components/Home/HomeContainer";
 
-const HomePage = () => {
-  return (
-    <>
-      <Home />
-    </>
-  );
-};
+const HomePage = () => <HomeContainer />
 
 export default HomePage;

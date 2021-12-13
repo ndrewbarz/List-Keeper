@@ -11,6 +11,7 @@ import Drawer from "./Drawer";
 import NavigationItems from "./NavigationItems";
 
 import { useMediaQuery } from "react-responsive";
+import { ContainerDrawer, ContainerNav } from "../../styled/style";
 
 const NavigationContainer = () => {
   const { isAuth, user } = useSelector((state) => state.auth);
@@ -98,6 +99,10 @@ const NavigationContainer = () => {
   }, []);
 
   const isTabletOrMobile = useMediaQuery({ query: "(max-width: 990px)" });
+
+  const [toggleDrawer, setToggleDrawer] = useState(false);
+  const showSidebar = () => setToggleDrawer(!toggleDrawer);
+
   return (
     <>
       {/* ADD */}
@@ -114,25 +119,28 @@ const NavigationContainer = () => {
         handleRemoveClick={handleRemoveClick}
         handleAddClick={handleAddClick}
       />
-      {isTabletOrMobile ? (
-        <Drawer>
-          <NavigationItems
-            lists={lists}
-            searchText={searchText}
-            isAuth={isAuth}
-            handleLogout={handleLogout}
-            toggleModal={toggleModal}
-            toggleCalendar={toggleCalendar}
-            showCalendar={showCalendar}
-            setShowCalendar={setShowCalendar}
-            handleSearch={handleSearch}
-            handleFilter={handleFilter}
-            filterFavorites={filterFavorites}
-            user={user}
-          />
+      {isTabletOrMobile && (
+        <Drawer showSidebar={showSidebar} toggleDrawer={toggleDrawer}>
+          <ContainerDrawer toggleDrawer={toggleDrawer}>
+            <NavigationItems
+              lists={lists}
+              searchText={searchText}
+              isAuth={isAuth}
+              handleLogout={handleLogout}
+              toggleModal={toggleModal}
+              toggleCalendar={toggleCalendar}
+              showCalendar={showCalendar}
+              setShowCalendar={setShowCalendar}
+              handleSearch={handleSearch}
+              handleFilter={handleFilter}
+              filterFavorites={filterFavorites}
+              user={user}
+            />
+          </ContainerDrawer>
         </Drawer>
-      ) : (
-        <Navbar scrolled={scrolled}>
+      )}
+      <Navbar scrolled={scrolled}>
+        <ContainerNav>
           <NavigationItems
             lists={lists}
             searchText={searchText}
@@ -146,9 +154,10 @@ const NavigationContainer = () => {
             handleFilter={handleFilter}
             filterFavorites={filterFavorites}
             user={user}
+            showSidebar={showSidebar}
           />
-        </Navbar>
-      )}
+        </ContainerNav>
+      </Navbar>
     </>
   );
 };
