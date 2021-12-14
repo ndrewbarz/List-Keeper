@@ -1,12 +1,10 @@
 import React, { useEffect } from "react";
 import AppRouter from "./components/AppRouter";
 import { createGlobalStyle } from "styled-components";
-import Navbar from "./components/Navbar";
 import { useDispatch } from "react-redux";
 import { AuthActionCreators } from "./store/reducers/auth/action-creators";
 import { useNavigate } from "react-router-dom";
 import { Wrapper } from "./styled/style";
-import Drawer from "./components/Navigation/Drawer";
 import NavigationContainer from "./components/Navigation/NavigationContainer";
 
 const GlobalStyle = createGlobalStyle`
@@ -37,9 +35,7 @@ const App = () => {
   return (
     <>
       <GlobalStyle />
-      {/* <Navbar /> */}
       <NavigationContainer />
-      {/* <Drawer /> */}
       <Wrapper>
         <AppRouter />
       </Wrapper>

@@ -5,13 +5,13 @@ import { ListsActionCreators } from "../../store/reducers/userData/action-creato
 import { FilterActionCreators } from "../../store/reducers/filter/action-creator";
 import { getDate } from "../../utils/getDate";
 
-import Modal from "../Modal";
 import Navbar from "./Navbar";
 import Drawer from "./Drawer";
 import NavigationItems from "./NavigationItems";
 
 import { useMediaQuery } from "react-responsive";
 import { ContainerDrawer, ContainerNav } from "../../styled/style";
+import ModalAddEdit from "../ModalAddEdit";
 
 const NavigationContainer = () => {
   const { isAuth, user } = useSelector((state) => state.auth);
@@ -106,7 +106,7 @@ const NavigationContainer = () => {
   return (
     <>
       {/* ADD */}
-      <Modal
+      <ModalAddEdit
         showModal={showModal}
         setShowModal={setShowModal}
         saveList={saveList}

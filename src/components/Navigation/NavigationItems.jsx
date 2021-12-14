@@ -21,7 +21,7 @@ import calendarIcon from "../../assets/calendar.png";
 import favoriteIconActive from "../../assets/favoriteIconActive.png";
 import logoIcon from "../../assets/logo.png";
 
-import Button from "../Button";
+import CustomButton from "../../common/Button/CustomButton";
 
 import SearchBar from "../SearchBar";
 import Calendar from "../Calendar";
@@ -112,12 +112,12 @@ const NavigationItems = ({
         </>
       ) : (
         <>
-          <Button>
+          <CustomButton variant="solid" color="primary">
             <Link to={"/login"}>Login</Link>
-          </Button>
-          <Button>
+          </CustomButton>
+          <CustomButton variant="solid" color="primary">
             <Link to={"/registration"}>Registration</Link>
-          </Button>
+          </CustomButton>
         </>
       )}
     </>

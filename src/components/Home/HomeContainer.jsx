@@ -2,17 +2,15 @@ import React, { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { FilterActionCreators } from "../../store/reducers/filter/action-creator";
 import { ListsActionCreators } from "../../store/reducers/userData/action-creators";
-import {
-  FilterRemoveButtonStyled,
-  FilterRemoveIconStyled,
-  LoadersStyled,
-  RemoveFilterBox,
-} from "../../styled/style";
-import Modal from "../Modal";
+import { LoadersStyled, Text } from "../../styled/style";
 import { getDate } from "../../utils/getDate";
 import { shareList } from "../../utils/shareList";
-import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import Home from "./Home";
+import ModalAddEdit from "../ModalAddEdit";
+import Confirmation from "../Confirmation/Confirmation";
+import CustomButton from "../../common/Button/CustomButton";
+import CustomModal from "../../common/Modal/CustomModal";
+import ConfirmationModalDelete from "./ConfirmationModalDelete/ConfirmationModalDelete";
 
 const HomeContainer = () => {
   const dispatch = useDispatch();
@@ -30,6 +28,9 @@ const HomeContainer = () => {
   const [listItem, setInputList] = useState(current?.listItem || []);
   const [isCompleteItems, setIsCompleteItems] = useState([]);
   const [isFavorites, setIsFavorites] = useState(false);
+
+  const [showConfirmation, setShowConfirmation] = useState(false);
+  const [deleteId, setDeleteId] = useState("");
 
   //* generate inputs
   const handleInputChange = (idx, e) => {
@@ -112,9 +113,15 @@ const HomeContainer = () => {
     }
   };
 
-  // Delete list card
-  const handleDelete = (id) => {
-    dispatch(ListsActionCreators.deleteList(id));
+  const handleShowConfirmationDeleteModal = (id) => {
+    setDeleteId(id);
+    setShowConfirmation(true);
+  };
+
+  //! Delete list card
+  const handleDelete = (deleteId) => {
+    setShowConfirmation(!showConfirmation);
+    dispatch(ListsActionCreators.deleteList(deleteId));
   };
 
   const handleEdit = (list) => {
@@ -176,7 +183,7 @@ const HomeContainer = () => {
       <Home
         filteredCards={filteredCards}
         onEdit={handleEdit}
-        onDelete={handleDelete}
+        onDelete={handleShowConfirmationDeleteModal}
         onToggle={handleToggle}
         isToggle={isToggle}
         isCompleteItems={isCompleteItems}
@@ -188,8 +195,17 @@ const HomeContainer = () => {
         clearSearchTextHandler={clearSearchTextHandler}
       />
 
+      {/* //* CONFIRMATION DELETE MODAL */}
+      {showConfirmation && (
+        <ConfirmationModalDelete
+          setShowConfirmation={setShowConfirmation}
+          handleDelete={handleDelete}
+          deleteId={deleteId}
+        />
+      )}
+
       {/* //* EDIT MODAL */}
-      <Modal
+      <ModalAddEdit
         showModal={showModal}
         setShowModal={setShowModal}
         saveList={saveList}

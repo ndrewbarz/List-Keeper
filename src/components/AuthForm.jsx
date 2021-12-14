@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { AuthActionCreators } from "../store/reducers/auth/action-creators";
 import { useNavigate, useLocation } from "react-router-dom";
 import Link, { FormStyled, Input } from "../styled/style";
-import Button from "./Button";
+import CustomButton from "../common/Button/CustomButton";
 import LogoIcon from "../assets/logo.png"
 
 const AuthForm = () => {
@@ -48,9 +48,9 @@ const AuthForm = () => {
             placeholder="Password"
             required
           />
-          <Button>
+          <CustomButton variant="solid" color="primary">
             {location.pathname === "/login" ? "Sign In" : "Sign Up"}
-          </Button>
+          </CustomButton>
           {location.pathname === "/login" ? (
             <p>
               New user? <Link to={"/registration"}>Create account</Link>

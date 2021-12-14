@@ -67,6 +67,12 @@ export const TextStyled = styled.h2`
   margin-top: 200px;
 `;
 
+export const Text = styled.span`
+  color: ${(props) => props.color};
+  padding: 5px 20px;
+  line-height: 1.7;
+`;
+
 export default styled(Link)`
   color: #fff;
   text-decoration: none;
