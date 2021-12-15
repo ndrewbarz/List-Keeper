@@ -1,31 +1,39 @@
 import React from 'react'
 import CustomButton from '../../../common/Button/CustomButton';
 import CustomModal from '../../../common/Modal/CustomModal';
-import { Text } from '../../../styled/style';
 
-const ConfirmationModalDelete = ({ setShowConfirmation, handleDelete, deleteId }) => {
+const ConfirmationModalDelete = ({ setShowConfirmation, handleDelete, deleteId, filteredCards, showConfirmation }) => {
+    const { listTitle } = filteredCards.find(card => card._id === deleteId)
+
     return (
         <CustomModal
-            setShowModal={setShowConfirmation}
-            withFavorites
+            onClose={() => setShowConfirmation(false)}
+            showModal={showConfirmation}
+            // title={`Are you sure want to delete "${listTitle || 'this'}" card?`}
+            title={" "}
+            actionFooterBar={
+                <>
+                    <CustomButton
+                        variant="solid"
+                        color="secondary"
+                        onClick={() => {
+                            setShowConfirmation(false);
+                        }}
+                    >
+                        Cancel
+                    </CustomButton>
+                    <CustomButton
+                        variant="solid"
+                        color="danger"
+                        onClick={() => handleDelete(deleteId)}
+                    >
+                        Delete
+                    </CustomButton>
+
+                </>
+            }
         >
-            <Text>Are you sure you want to delete?</Text>
-            <CustomButton
-                variant="solid"
-                color="secondary"
-                onClick={() => {
-                    setShowConfirmation(false);
-                }}
-            >
-                Cancel
-            </CustomButton>
-            <CustomButton
-                variant="solid"
-                color="danger"
-                onClick={() => handleDelete(deleteId)}
-            >
-                Delete
-            </CustomButton>
+            <h2 style={{ textAlign: "center" }}>{`Are you sure want to delete "${listTitle || 'this'}" card?`}</h2>
         </CustomModal>
     )
 }

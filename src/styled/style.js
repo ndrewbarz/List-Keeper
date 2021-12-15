@@ -460,7 +460,7 @@ export const ArrowIcon = styled(IconStyled)`
 `;
 
 export const CloseIcon = styled(IconStyled)`
-  position: absolute;
+  // position: absolute;
 `;
 
 export const AddIcon = styled(IconStyled)`
@@ -515,7 +515,8 @@ export const LogoIcon = styled(IconStyled)`
 // Modal
 export const ModalWrapper = styled.div`
   width: 600px;
-  height: 500px;
+  height: fit-content;
+  min-height: 250px;
   background: rgba(255, 255, 255, 0.3);
   backdrop-filter: blur(10px);
   color: #000;
@@ -563,27 +564,49 @@ export const ModalFormInput = styled.input`
   border-radius: 5px;
 `;
 
-export const ModalBtn = styled.button`
-  // background: ${(props) => props.background};
-  background: #fff;
-  color: #141e30;
-  width: 110px;
-  height: 30px;
-  border: 2px solid #141e30;
-  border-radius: 5px;
-  outline: none;
-  cursor: pointer;
-  transition: 0.2s;
-  :hover {
-    background: #141e30;
-    color: #fff;
-  }
-`;
-
 export const ModalTopIcons = styled.div`
   position: absolute;
   top: 20px;
   right: 40px;
   padding: 0;
   z-index: 10;
+`;
+
+// new custom modal
+
+export const ModalHeader = styled.div`
+  display: flex;
+  width: 95%;
+  align-items: center;
+  justify-content: space-between;
+`;
+
+export const ModalHeaderIcons = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`;
+
+export const ModalTitle = styled.span`
+  font-size: ${({ size }) => size || "2em"};
+  color: #f4f4f4;
+`;
+
+export const ModalBody = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  width: 95%;
+`;
+
+export const ModalFooter = styled.div`
+  display: flex;
+  width: 95%;
+  align-items: center;
+  justify-content: center;
+  margin: 10px 0;
+  & > button {
+    margin: 20px 10px 0 10px;
+  }
 `;

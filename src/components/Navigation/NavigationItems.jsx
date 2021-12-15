@@ -3,7 +3,6 @@ import Link, {
   AddIcon,
   FavoriteIcon,
   LogoutIcon,
-  Container,
   AddIconPulseAnimation,
   NavTitleStyled,
   CalendarIcon,

@@ -9,7 +9,7 @@ import Navbar from "./Navbar";
 import Drawer from "./Drawer";
 import NavigationItems from "./NavigationItems";
 
-import { useMediaQuery } from "react-responsive";
+// import { useMediaQuery } from "react-responsive";
 import { ContainerDrawer, ContainerNav } from "../../styled/style";
 import ModalAddEdit from "../ModalAddEdit";
 
@@ -98,17 +98,25 @@ const NavigationContainer = () => {
     };
   }, []);
 
-  const isTabletOrMobile = useMediaQuery({ query: "(max-width: 990px)" });
+  // const isTabletOrMobile = useMediaQuery({ query: "(max-width: 990px)" });
 
   const [toggleDrawer, setToggleDrawer] = useState(false);
   const showSidebar = () => setToggleDrawer(!toggleDrawer);
+
+  const onCloseModalHandler = () => {
+    setListTitle("");
+    setCategory("");
+    setInputList([{ itemValue: "", isComplete: false, id: `${Date.now()}` }]);
+    setIsFavorites(false);
+    setShowModal(false);
+  }
 
   return (
     <>
       {/* ADD */}
       <ModalAddEdit
         showModal={showModal}
-        setShowModal={setShowModal}
+        onClose={onCloseModalHandler}
         saveList={saveList}
         setCategory={setCategory}
         setListTitle={setListTitle}
@@ -119,26 +127,26 @@ const NavigationContainer = () => {
         handleRemoveClick={handleRemoveClick}
         handleAddClick={handleAddClick}
       />
-      {isTabletOrMobile && (
-        <Drawer showSidebar={showSidebar} toggleDrawer={toggleDrawer}>
-          <ContainerDrawer toggleDrawer={toggleDrawer}>
-            <NavigationItems
-              lists={lists}
-              searchText={searchText}
-              isAuth={isAuth}
-              handleLogout={handleLogout}
-              toggleModal={toggleModal}
-              toggleCalendar={toggleCalendar}
-              showCalendar={showCalendar}
-              setShowCalendar={setShowCalendar}
-              handleSearch={handleSearch}
-              handleFilter={handleFilter}
-              filterFavorites={filterFavorites}
-              user={user}
-            />
-          </ContainerDrawer>
-        </Drawer>
-      )}
+      {/* {isTabletOrMobile && ( */}
+      <Drawer showSidebar={showSidebar} toggleDrawer={toggleDrawer}>
+        <ContainerDrawer toggleDrawer={toggleDrawer}>
+          <NavigationItems
+            lists={lists}
+            searchText={searchText}
+            isAuth={isAuth}
+            handleLogout={handleLogout}
+            toggleModal={toggleModal}
+            toggleCalendar={toggleCalendar}
+            showCalendar={showCalendar}
+            setShowCalendar={setShowCalendar}
+            handleSearch={handleSearch}
+            handleFilter={handleFilter}
+            filterFavorites={filterFavorites}
+            user={user}
+          />
+        </ContainerDrawer>
+      </Drawer>
+      {/* )} */}
       <Navbar scrolled={scrolled}>
         <ContainerNav>
           <NavigationItems

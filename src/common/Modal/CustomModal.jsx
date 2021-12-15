@@ -1,81 +1,63 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef } from "react";
 import {
-    ModalBackground,
-    ModalContent,
-    ModalWrapper,
-    CloseIcon,
-    FavoriteIcon,
-    FavoriteIconActive,
-    ModalTopIcons,
+  ModalBackground,
+  ModalContent,
+  ModalWrapper,
+  CloseIcon,
+  ModalHeader,
+  ModalTitle,
+  ModalBody,
+  ModalFooter,
+  ModalHeaderIcons,
 } from "../../styled/style";
 import close from "../../assets/close.png";
 
-import favoriteIcon from "../../assets/favoriteIcon.png";
-import favoriteIconActive from "../../assets/favoriteIconActive.png";
 import { ListsActionCreators } from "../../store/reducers/userData/action-creators";
 import { useDispatch } from "react-redux";
 
 const CustomModal = ({
-    // showModal,
-    setShowModal,
-    setIsFavorites,
-    current,
-    children
+  setShowModal,
+  title,
+  current,
+  children,
+  actionFooterBar,
+  actionHeaderBar,
+  withCloseButton,
+  showModal,
+  onClose
 }) => {
-    const modalRef = useRef();
-    const dispatch = useDispatch();
-    const [favorites, setFavorites] = useState(null);
+  const modalRef = useRef();
+  const dispatch = useDispatch();
 
-    useEffect(() => {
-        setFavorites(current?.isFavorites);
-    }, [current]);
+  const closeModal = () => {
+    // e.preventDefault();
+    onClose();
+    current && dispatch(ListsActionCreators.clearCurrentList(current));
+  };
 
-    const closeModal = (e) => {
-        e.preventDefault();
-        setShowModal(false);
-        dispatch(ListsActionCreators.clearCurrentList(current));
-    };
-
-    const handleClickIsFavorites = () => {
-        setIsFavorites(!favorites);
-        setFavorites(!favorites);
-    };
-
-    return (
-        <>
-            {/* {showModal ? ( */}
-            <ModalBackground
-                ref={modalRef}
-                onClick={(e) => modalRef.current === e.target && closeModal(e)}
-            >
-                {/* <ModalWrapper showModal={showModal}> */}
-                <ModalWrapper >
-                    <ModalTopIcons>
-                        {!favorites ? (
-                            <FavoriteIcon
-                                src={favoriteIcon}
-                                width="25px" height="25px"
-                                onClick={handleClickIsFavorites}
-                            />
-                        ) : (
-                            <FavoriteIconActive
-                                src={favoriteIconActive}
-                                width="25px" height="25px"
-                                onClick={handleClickIsFavorites}
-                            />
-                        )}
-                        <CloseIcon src={close} width='25px' onClick={closeModal} />
-                    </ModalTopIcons>
-                    <ModalContent>
-
-                        {children}
-
-                    </ModalContent>
-                </ModalWrapper>
-            </ModalBackground>
-            {/* ) : null} */}
-        </>
-    );
+  return (
+    showModal &&
+    <ModalBackground
+      ref={modalRef}
+      onClick={(e) => modalRef.current === e.target && closeModal()}
+    >
+      <ModalWrapper>
+        <ModalContent>
+          <ModalHeader>
+            <ModalTitle>{title || "Title"}</ModalTitle>
+            <ModalHeaderIcons>
+              {actionHeaderBar && actionHeaderBar}
+              {withCloseButton && (
+                <CloseIcon src={close} width="25px" onClick={closeModal} />
+              )}
+            </ModalHeaderIcons>
+          </ModalHeader>
+          <ModalBody>{children}</ModalBody>
+          <ModalFooter>{!!actionFooterBar && actionFooterBar}</ModalFooter>
+        </ModalContent>
+      </ModalWrapper>
+    </ModalBackground>
+  );
 };
 
 export default CustomModal;

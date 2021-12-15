@@ -2,14 +2,11 @@ import React, { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { FilterActionCreators } from "../../store/reducers/filter/action-creator";
 import { ListsActionCreators } from "../../store/reducers/userData/action-creators";
-import { LoadersStyled, Text } from "../../styled/style";
+import { LoadersStyled } from "../../styled/style";
 import { getDate } from "../../utils/getDate";
 import { shareList } from "../../utils/shareList";
 import Home from "./Home";
 import ModalAddEdit from "../ModalAddEdit";
-import Confirmation from "../Confirmation/Confirmation";
-import CustomButton from "../../common/Button/CustomButton";
-import CustomModal from "../../common/Modal/CustomModal";
 import ConfirmationModalDelete from "./ConfirmationModalDelete/ConfirmationModalDelete";
 
 const HomeContainer = () => {
@@ -174,6 +171,21 @@ const HomeContainer = () => {
       setIsFavorites(current?.isFavorites);
     }
   }, [current]);
+
+  const onCloseEditModalHandler = () => {
+    if (current) {
+      setListTitle(current?.listTitle);
+      setCategory(current?.category);
+      setInputList(current?.listItem);
+      setIsFavorites(current?.isFavorites);
+    } else {
+      setListTitle("");
+      setCategory("");
+      setInputList([{ itemValue: "", isComplete: false, id: `${Date.now()}` }]);
+      setIsFavorites(false);
+    }
+    setShowModal(false);
+  }
   return (
     <>
       {loading && (
@@ -198,16 +210,18 @@ const HomeContainer = () => {
       {/* //* CONFIRMATION DELETE MODAL */}
       {showConfirmation && (
         <ConfirmationModalDelete
+          showConfirmation={showConfirmation}
           setShowConfirmation={setShowConfirmation}
           handleDelete={handleDelete}
           deleteId={deleteId}
+          filteredCards={filteredCards}
         />
       )}
 
       {/* //* EDIT MODAL */}
       <ModalAddEdit
         showModal={showModal}
-        setShowModal={setShowModal}
+        onClose={onCloseEditModalHandler}
         saveList={saveList}
         setCategory={setCategory}
         setListTitle={setListTitle}
