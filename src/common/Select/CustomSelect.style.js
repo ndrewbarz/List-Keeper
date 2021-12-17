@@ -1,38 +1,47 @@
 import styled from "styled-components";
 
 export const DropDownContainer = styled.div`
-  width: 10.5em;
-  margin: 0 auto;
+  width: 260px;
+  user-select: none;
+  margin: 10px 0;
+  position: relative;
+  z-index: 9;
+  margin-left: 15px;
 `;
 
 export const DropDownHeader = styled.div`
-  margin-bottom: 0.8em;
-  padding: 0.4em 2em 0.4em 1em;
-  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.15);
-  font-weight: 500;
-  font-size: 1rem;
-  color: #3faffa;
-  background: #ffffff;
+  padding: 5px 10px;
+  background: #fff;
+  box-shadow: 3px 3px 10px 6px rgba(0, 0, 0, 0.06);
+  font-weight: bold;
+  color: #333;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  justify-content: space-between;
 `;
 
 export const DropDownListContainer = styled.div``;
 
 export const DropDownList = styled.ul`
-  padding: 0;
-  margin: 0;
-  padding-left: 1em;
-  background: #ffffff;
-  border: 2px solid #e5e5e5;
+  position: absolute;
+  list-style: none;
+  top: 70%;
+  left: 0;
+  padding: 10px;
+  background: #fff;
+  box-shadow: 3px 3px 10px 6px rgba(0, 0, 0, 0.06);
   box-sizing: border-box;
-  color: #3faffa;
-  font-size: 1rem;
   font-weight: 500;
-  &:first-child {
-    padding-top: 0.8em;
-  }
+  color: #333;
+  width: 100%;
 `;
 
 export const ListItem = styled.li`
-  list-style: none;
-  margin-bottom: 0.8em;
+  padding: 10px;
+  cursor: pointer;
+  transition: all 0.2s;
+  &:hover {
+    background: #f4f4f4;
+  }
 `;

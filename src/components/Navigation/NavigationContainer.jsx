@@ -12,6 +12,7 @@ import NavigationItems from "./NavigationItems";
 // import { useMediaQuery } from "react-responsive";
 import { ContainerDrawer, ContainerNav } from "../../styled/style";
 import ModalAddEdit from "../ModalAddEdit";
+import CategoryCreateModal from "./CategoryCreateModal/CategoryCreateModal";
 
 const NavigationContainer = () => {
   const { isAuth, user } = useSelector((state) => state.auth);
@@ -19,12 +20,21 @@ const NavigationContainer = () => {
 
   const dispatch = useDispatch();
   const [category, setCategory] = useState("");
+  const [color, setColor] = useState('#141E30');
+
+  const colorPics = (e) => {
+    setColor(e.target.value)
+    console.log(e.target.value);
+  }
+
   const [listTitle, setListTitle] = useState("");
   const [scrolled, setScrolled] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [showCalendar, setShowCalendar] = useState(false);
   const [isFavorites, setIsFavorites] = useState(false);
   const [filterFavorites, setFilterFavorites] = useState(false);
+  // 
+  const [showCategoryModal, setShowCategoryModal] = useState(false);
 
   const handleFilter = () => {
     dispatch(FilterActionCreators.setFilter(!filterFavorites));
@@ -32,7 +42,7 @@ const NavigationContainer = () => {
   };
 
   const handleSearch = (e) => {
-    dispatch(ListsActionCreators.setSearchText(e.target.value));
+    dispatch(FilterActionCreators.setSearchText(e.target.value));
   };
 
   // generate inputs
@@ -79,7 +89,18 @@ const NavigationContainer = () => {
     setIsFavorites(false);
     setShowModal(false);
   };
-
+  //! Create Category
+  const handleCreateCategory = (e) => {
+    e.preventDefault();
+    const newCategory = {
+      id: Date.now(),
+      name: category,
+      color: color
+    }
+    dispatch(ListsActionCreators.addCategory(newCategory));
+    setShowCategoryModal(false);
+  };
+  // !
   const handleLogout = () => {
     dispatch(AuthActionCreators.logout());
   };
@@ -163,9 +184,22 @@ const NavigationContainer = () => {
             filterFavorites={filterFavorites}
             user={user}
             showSidebar={showSidebar}
+            openAddCategoryModal={setShowCategoryModal}
           />
         </ContainerNav>
       </Navbar>
+
+      {/* //!add category */}
+      {showCategoryModal && (
+        <CategoryCreateModal
+          showCategoryModal={showCategoryModal}
+          setShowCategoryModal={setShowCategoryModal}
+          handleCreateCategory={handleCreateCategory}
+          setCategory={setCategory}
+          setColor={colorPics}
+          color={color}
+        />
+      )}
     </>
   );
 };

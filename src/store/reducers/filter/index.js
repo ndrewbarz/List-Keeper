@@ -1,10 +1,13 @@
 export const SET_FILTER = "SET_FILTER";
 export const SET_FILTER_BY_DATE = "SET_FILTER_BY_DATE";
 export const CLEAR_FILTER_DATE = "CLEAR_FILTER_DATE";
+export const SET_SEARCH_TEXT = "SET_SEARCH_TEXT";
+export const CLEAR_SEARCH_TEXT = "CLEAR_SEARCH_TEXT";
 
 const initialState = {
   filter: false,
   filterByDate: "",
+  searchText: "",
 };
 
 export default function filterReducer(state = initialState, action) {
@@ -17,6 +20,18 @@ export default function filterReducer(state = initialState, action) {
 
     case CLEAR_FILTER_DATE:
       return { ...state, filterByDate: "" };
+
+    case SET_SEARCH_TEXT:
+      return {
+        ...state,
+        searchText: action.payload,
+      };
+
+    case CLEAR_SEARCH_TEXT:
+      return {
+        ...state,
+        searchText: "",
+      };
 
     default:
       return state;

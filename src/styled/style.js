@@ -467,6 +467,10 @@ export const AddIcon = styled(IconStyled)`
   margin: 0 50px 0 10px;
 `;
 
+export const AddCategoryIcon = styled(IconStyled)`
+  margin: 0 50px 0 10px;
+`;
+
 export const AddIconPulseAnimation = styled(IconStyled)`
   animation: ${pulse} 1s infinite;
   margin: 0 50px 0 10px;

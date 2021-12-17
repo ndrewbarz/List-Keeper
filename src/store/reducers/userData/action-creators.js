@@ -7,8 +7,7 @@ import {
   SET_CURRENT_LIST,
   CLEAR_CURRENT_LIST,
   SET_LOADING,
-  SET_SEARCH_TEXT,
-  CLEAR_SEARCH_TEXT,
+  ADD_CATEGORY,
 } from ".";
 import UserDataService from "../../../services/UserDataService";
 
@@ -87,17 +86,14 @@ export const ListsActionCreators = {
     };
   },
 
-  // seacrh
-  setSearchText: (text) => {
-    return {
-      type: SET_SEARCH_TEXT,
-      payload: text,
-    };
-  },
+  // add new category
+  addNewCategory: (payload) => ({
+    type: ADD_CATEGORY,
+    payload,
+  }),
+  addCategory: (category) => async (dispatch) => {
+    dispatch(ListsActionCreators.setLoading());
 
-  clearSearchText: () => {
-    return {
-      type: CLEAR_SEARCH_TEXT,
-    };
+    dispatch(ListsActionCreators.addNewCategory(category));
   },
 };

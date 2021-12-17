@@ -17,7 +17,8 @@ import CustomButton from "../common/Button/CustomButton";
 import CustomModal from "../common/Modal/CustomModal";
 import CustomSelect from "../common/Select/CustomSelect";
 
-import { categories } from '../utils/categories';
+// import { categories } from "../utils/categories";
+import { useSelector } from "react-redux";
 
 const ModalAddEdit = ({
   showModal,
@@ -34,6 +35,7 @@ const ModalAddEdit = ({
   onClose,
 }) => {
   const [favorites, setFavorites] = useState(null);
+  const { categories } = useSelector((state) => state.lists);
 
   useEffect(() => {
     setFavorites(current?.isFavorites);
@@ -43,6 +45,7 @@ const ModalAddEdit = ({
     setIsFavorites(!favorites);
     setFavorites(!favorites);
   };
+
   return (
     <CustomModal
       showModal={showModal}
@@ -80,16 +83,31 @@ const ModalAddEdit = ({
           onChange={(e) => setListTitle(e.target.value)}
         />
 
-        <label htmlFor="list-category"> List Category</label>
-        <ModalFormInput
-          defaultValue={current ? current.category : ""}
-          type="text"
-          name="list-category"
-          id="list-category"
-          required
-          onChange={(e) => setCategory(e.target.value)}
-        />
-        <CustomSelect options={categories} />
+        <label htmlFor="list-category">
+          Select category or create your own in navbar menu
+        </label>
+        {/*//! SELECT */}
+        <div
+          style={{
+            width: "85%",
+            display: "flex",
+            alignItems: "baseline",
+          }}
+        >
+          {/* <ModalFormInput
+            defaultValue={""}
+            type="text"
+            name="list-category"
+            id="list-category"
+            required
+            onChange={(e) => setCategory(e.target.value)}
+          /> */}
+          <CustomSelect
+            options={categories}
+            title={current ? current.category : "Select category"}
+            setCategory={setCategory}
+          />
+        </div>
         <label htmlFor="list-items">Add shopping items</label>
         <div
           style={{

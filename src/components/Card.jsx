@@ -19,6 +19,7 @@ import arrow from "../assets/arrow.png";
 import favoriteIcon from "../assets/favoriteIcon.png";
 import favoriteIconActive from "../assets/favoriteIconActive.png";
 import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 
 const Card = ({
   onClick,
@@ -34,10 +35,14 @@ const Card = ({
   const dispatch = useDispatch();
   const [toggleRotate, setToggleRotate] = useState(false);
 
+  const { categories } = useSelector(state => state.lists)
+
   const toggleRotateEffect = () => {
     setToggleRotate(!toggleRotate);
     onToggle();
   };
+
+  const cardCategory = categories.find(cat => cat.name === list.category)
 
   const updateIsFavorite = () => {
     const updList = {
@@ -48,7 +53,7 @@ const Card = ({
     dispatch(thunk(updList));
   };
   return (
-    <CardWrapper onClick={onClick}>
+    <CardWrapper onClick={onClick} style={{ background: !!cardCategory ? cardCategory.color : 'none' }} >
       <CardInfo>
         <CardInfoLeft>
           <CardTitle>{list.listTitle}</CardTitle>

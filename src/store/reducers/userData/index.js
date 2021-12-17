@@ -5,14 +5,19 @@ export const UPDATE_LIST = "UPDATE_LIST";
 export const SET_CURRENT_LIST = "SET_CURRENT_LIST";
 export const CLEAR_CURRENT_LIST = "CLEAR_CURRENT_LIST";
 export const SET_LOADING = "SET_LOADING";
-export const SET_SEARCH_TEXT = "SET_SEARCH_TEXT";
-export const CLEAR_SEARCH_TEXT = "CLEAR_SEARCH_TEXT";
+//
+export const ADD_CATEGORY = "ADD_CATEGORY";
 
 const initialState = {
   lists: [],
   loading: false,
   current: null,
-  searchText: "",
+  //
+  categories: [
+    { id: 1, name: "Food", color: "#3d4376" },
+    { id: 2, name: "Technics", color: "#ad38a4" },
+    // { id: 3, name: "Clothes" },
+  ],
 };
 
 export default function userDataReducer(state = initialState, action) {
@@ -57,17 +62,14 @@ export default function userDataReducer(state = initialState, action) {
         current: null,
       };
 
-    case SET_SEARCH_TEXT:
+    //
+    case ADD_CATEGORY:
       return {
         ...state,
-        searchText: action.payload,
+        categories: [...state.categories, action.payload],
+        loading: false,
       };
 
-    case CLEAR_SEARCH_TEXT:
-      return {
-        ...state,
-        searchText: "",
-      };
     default:
       return state;
   }

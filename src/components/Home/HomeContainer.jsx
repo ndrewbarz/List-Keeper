@@ -12,10 +12,10 @@ import ConfirmationModalDelete from "./ConfirmationModalDelete/ConfirmationModal
 const HomeContainer = () => {
   const dispatch = useDispatch();
   const { id } = useSelector((state) => state.auth.user);
-  const { lists, current, loading, searchText } = useSelector(
+  const { lists, current, loading, } = useSelector(
     (state) => state.lists
   );
-  const { filter, filterByDate } = useSelector((state) => state.filter);
+  const { filter, filterByDate, searchText } = useSelector((state) => state.filter);
 
   const [isFetched, setIsFetched] = useState(false);
   const [isToggle, setIsToggle] = useState([]);
@@ -53,6 +53,7 @@ const HomeContainer = () => {
   };
   //* generate inputs END
 
+  // Save changed list
   const saveList = (e) => {
     e.preventDefault();
     const updList = {
@@ -142,7 +143,7 @@ const HomeContainer = () => {
     dispatch(FilterActionCreators.clearFilterDate());
   };
   const clearSearchTextHandler = () => {
-    dispatch(ListsActionCreators.clearSearchText());
+    dispatch(FilterActionCreators.clearSearchText());
   };
 
   useEffect(() => {

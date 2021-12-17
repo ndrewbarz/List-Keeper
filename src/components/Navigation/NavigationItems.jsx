@@ -1,6 +1,7 @@
 import React from "react";
 import Link, {
   AddIcon,
+  AddCategoryIcon,
   FavoriteIcon,
   LogoutIcon,
   AddIconPulseAnimation,
@@ -14,6 +15,7 @@ import Link, {
   DrawerButton,
 } from "../../styled/style";
 import plus from "../../assets/add.png";
+import addCategoryIcon from '../../assets/addCategoryIcon.svg';
 import logOut from "../../assets/logout.png";
 import favoriteIcon from "../../assets/favoriteIcon.png";
 import calendarIcon from "../../assets/calendar.png";
@@ -41,6 +43,7 @@ const NavigationItems = ({
   user,
   handleLogout,
   showSidebar,
+  openAddCategoryModal
 }) => {
   return (
     <>
@@ -100,6 +103,10 @@ const NavigationItems = ({
                 onClick={toggleModal}
               />
             )}
+            <AddCategoryIcon src={addCategoryIcon}
+              width="25px"
+              alt="Add Category"
+              onClick={() => openAddCategoryModal(true)} />
           </NavIconsBox>
 
           <LogoutBox>

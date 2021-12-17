@@ -1,39 +1,44 @@
-import React from 'react'
-import { useState } from 'react'
-import { DropDownContainer, DropDownHeader, DropDownListContainer, DropDownList, ListItem } from './CustomSelect.style';
+import React from "react";
+import { useState } from "react";
+import {
+  DropDownContainer,
+  DropDownHeader,
+  DropDownList,
+  ListItem,
+} from "./CustomSelect.style";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
 
-const CustomSelect = ({ options }) => {
-    const [isOpen, setIsOpen] = useState(false);
-    const [selectedOption, setSelectedOption] = useState(null);
+const CustomSelect = ({ title, options, setCategory }) => {
+  const [isActive, setIsActive] = useState(false);
+  const [selected, setSelected] = useState(title);
 
-    const toggling = () => setIsOpen(!isOpen);
+  return (
+    <DropDownContainer>
+      <DropDownHeader onClick={() => setIsActive(!isActive)}>
+        {selected}
+        <span>
+          <FontAwesomeIcon icon={faChevronDown} />
+        </span>
+      </DropDownHeader>
+      {isActive && (
+        <DropDownList>
+          {options.map((option) => (
+            <ListItem
+              onClick={() => {
+                setSelected(option.name);
+                setIsActive(false);
+                setCategory(option.name);
+              }}
+              key={option.id}
+            >
+              {option.name}
+            </ListItem>
+          ))}
+        </DropDownList>
+      )}
+    </DropDownContainer>
+  );
+};
 
-    const onOptionClicked = value => () => {
-        setSelectedOption(value);
-        setIsOpen(false);
-        console.log(selectedOption);
-    };
-
-    return (
-
-        <DropDownContainer>
-            <DropDownHeader onClick={toggling}>
-                {selectedOption || "Select Category"}
-            </DropDownHeader>
-            {isOpen && (
-                <DropDownListContainer>
-                    <DropDownList>
-                        {options.map(option => (
-                            <ListItem onClick={onOptionClicked(option)} key={option.id}>
-                                {option.name}
-                            </ListItem>
-                        ))}
-                    </DropDownList>
-                </DropDownListContainer>
-            )}
-        </DropDownContainer>
-    );
-
-}
-
-export default CustomSelect
+export default CustomSelect;
