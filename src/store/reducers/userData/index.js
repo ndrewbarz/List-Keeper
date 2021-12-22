@@ -12,11 +12,12 @@ const initialState = {
   lists: [],
   loading: false,
   current: null,
-  //
   categories: [
     { id: 1, name: "Food", color: "#3d4376" },
     { id: 2, name: "Technics", color: "#ad38a4" },
-    // { id: 3, name: "Clothes" },
+    { id: 3, name: "Animals", color: "#459528" },
+    { id: 4, name: "Drinks", color: "#a12b0f" },
+    { id: 5, name: "Tools", color: "#072a2a" },
   ],
 };
 

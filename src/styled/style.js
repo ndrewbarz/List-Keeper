@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { keyframes } from "styled-components";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import Loader from "react-loader-spinner";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -78,6 +78,14 @@ export default styled(Link)`
   text-decoration: none;
 `;
 
+export const NavlinkStyled = styled(NavLink)`
+  color: #fff;
+  text-decoration: none;
+  &.active {
+    color: red;
+  }
+`;
+
 // navigation
 export const Navigation = styled.nav`
   width: 100%;
@@ -118,14 +126,26 @@ export const NavTitleStyled = styled.p`
 `;
 
 export const NavIconsBox = styled.div`
-  // @media ${device.tablet} {
-  //   display: none;
-  // }
+  display: flex;
+  width: 200px;
+  justify-content: space-evenly;
+  & > img {
+    margin: 0;
+  }
 `;
 
 export const LogoutBox = styled.div`
   display: flex;
   align-items: center;
+`;
+
+export const LoginBox = styled.div`
+  display: flex;
+  align-items: center;
+  margin-right: 30px;
+  & > button {
+    margin: 10px;
+  }
 `;
 export const LogoutName = styled.span``;
 
@@ -151,9 +171,10 @@ export const DrawerStyled = styled.div`
 export const DrawerButton = styled.div`
   display: block;
   margin: 15px 10px;
-  color: red;
+  color: #fff;
   z-index: 99999;
   position: absolute;
+  cursor: pointer;
 `;
 
 // calendar
@@ -194,6 +215,7 @@ export const Wrapper = styled.div`
   height: 100%;
   display: flex;
   justify-content: center;
+  align-items: baseline;
   flex-wrap: wrap;
 `;
 
@@ -234,28 +256,31 @@ export const SearchBarStyled = styled.input`
 
 //! MEDIA
 export const ContainerNav = styled(Navigation)`
-  @media ${device.tablet} {
-    justify-content: space-around;
-  }
   @media ${device.desktop} {
     ${DrawerButton} {
       display: none;
     }
   }
   @media ${device.tablet} {
+    justify-content: flex-end;
+
     ${NavIconsBox}, ${LogoutName} {
       display: none;
     }
+    ${SearchBarBoxStyled} {
+      margin: 0 30px;
+    }
     ${DrawerButton} {
+      left: 0px;
       display: block;
       z-index: 999999;
     }
     ${DrawerStyled} {
       color: #fff;
     }
-    ${Container} {
-      flex-direction: column;
-    }
+    // ${Container} {
+    //   flex-direction: column;
+    // }
   }
 
   @media ${device.mobileL} {
@@ -286,22 +311,48 @@ export const ContainerNav = styled(Navigation)`
 
 export const ContainerDrawer = styled(DrawerStyled)`
   color: #fff;
-  // width: 100%;
-  @media ${device.tablet} {
+  width: 100%;
+  max-width: 350px;
+  padding: 10px;
+  gap: 1rem;
+  @media ${device.laptop} {
     ${DrawerButton} {
+      right: 10px;
       display: block;
     }
-  }
-  @media ${device.mobileL} {
-    ${DrawerButton} {
-      display: block;
-      top: 0;
-      right: 0;
+    ${SearchBarBoxStyled} {
+      max-width: 250px;
+      margin: 5px auto;
     }
+
     ${SearchBarStyled} {
       margin: 25px 0;
     }
-    width: 100%;
+    ${SearchBarIconStyled} {
+      top: 32px;
+      right: 0px;
+    }
+  }
+  @media ${device.mobileL} {
+    max-width: -webkit-fill-available;
+
+    ${SearchBarBoxStyled} {
+      max-width: 250px;
+      margin: 5px auto;
+    }
+
+    ${SearchBarStyled} {
+      margin: 25px 0;
+    }
+    ${SearchBarIconStyled} {
+      top: 32px;
+      right: 0px;
+    }
+    ${DrawerButton} {
+      display: block;
+      top: 0;
+      right: 15px;
+    }
   }
 `;
 
@@ -309,12 +360,13 @@ export const ContainerDrawer = styled(DrawerStyled)`
 
 // Form
 export const FormStyled = styled.form`
-  margin-top: 100px;
+  // margin-top: 100px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  // max-width: 300px;
-  // width: 100%;
+  align-self: flex-end;
+  max-width: 350px;
+  width: 100%;
   background: rgba(255, 255, 255, 0.3);
   backdrop-filter: blur(10px);
   padding: 30px;
@@ -366,7 +418,7 @@ export const CardWrapper = styled.div`
   align-items: center;
   width: 340px;
   height: fit-content;
-  margin: 20px;
+  margin: 10px;
 
   background: rgba(255, 255, 255, 0.192);
   backdrop-filter: blur(10px);
@@ -516,6 +568,13 @@ export const LogoIcon = styled(IconStyled)`
   margin-right: 10px;
 `;
 
+export const PreviewImgStyled = styled(IconStyled)`
+  src: ${(src) => src};
+  width: 410px;
+  height: 457px;
+  cursor: default;
+`;
+
 // Modal
 export const ModalWrapper = styled.div`
   width: 600px;
@@ -566,6 +625,8 @@ export const ModalFormInput = styled.input`
   padding: 10px 13px;
   border: 1px solid #999;
   border-radius: 5px;
+  font-size: 1em;
+  font-family: "Comfortaa", cursive;
 `;
 
 export const ModalTopIcons = styled.div`

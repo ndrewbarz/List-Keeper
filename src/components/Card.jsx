@@ -35,7 +35,7 @@ const Card = ({
   const dispatch = useDispatch();
   const [toggleRotate, setToggleRotate] = useState(false);
 
-  const { categories } = useSelector(state => state.lists)
+  const { categories } = useSelector(state => state.userData)
 
   const toggleRotateEffect = () => {
     setToggleRotate(!toggleRotate);

@@ -10,7 +10,7 @@ export const FilterActionCreators = {
   setFilter: (payload) => ({ type: SET_FILTER, payload }),
   setFilterByDate: (payload) => ({ type: SET_FILTER_BY_DATE, payload }),
   clearFilterDate: () => ({ type: CLEAR_FILTER_DATE }),
-  // seacrh
+
   setSearchText: (text) => {
     return {
       type: SET_SEARCH_TEXT,

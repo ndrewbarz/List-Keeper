@@ -10,31 +10,34 @@ import Drawer from "./Drawer";
 import NavigationItems from "./NavigationItems";
 
 // import { useMediaQuery } from "react-responsive";
-import { ContainerDrawer, ContainerNav } from "../../styled/style";
+import { ContainerDrawer, ContainerNav, DrawerButton } from "../../styled/style";
 import ModalAddEdit from "../ModalAddEdit";
 import CategoryCreateModal from "./CategoryCreateModal/CategoryCreateModal";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTimes } from "@fortawesome/free-solid-svg-icons";
+import { useAlert } from "react-alert";
 
 const NavigationContainer = () => {
-  const { isAuth, user } = useSelector((state) => state.auth);
-  const { lists, searchText } = useSelector((state) => state.lists);
-
   const dispatch = useDispatch();
+
+  const { isAuth, user } = useSelector((state) => state.auth);
+  const { lists } = useSelector((state) => state.userData);
+  const { filterByDate, searchText } = useSelector((state) => state.filter);
   const [category, setCategory] = useState("");
   const [color, setColor] = useState('#141E30');
-
-  const colorPics = (e) => {
-    setColor(e.target.value)
-    console.log(e.target.value);
-  }
-
+  const [date, setDate] = useState(getDate())
   const [listTitle, setListTitle] = useState("");
   const [scrolled, setScrolled] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [showCalendar, setShowCalendar] = useState(false);
+  const [showCategoryModal, setShowCategoryModal] = useState(false);
   const [isFavorites, setIsFavorites] = useState(false);
   const [filterFavorites, setFilterFavorites] = useState(false);
-  // 
-  const [showCategoryModal, setShowCategoryModal] = useState(false);
+
+  const alert = useAlert();
+
+
+  const colorPics = (e) => setColor(e.target.value)
 
   const handleFilter = () => {
     dispatch(FilterActionCreators.setFilter(!filterFavorites));
@@ -45,7 +48,17 @@ const NavigationContainer = () => {
     dispatch(FilterActionCreators.setSearchText(e.target.value));
   };
 
-  // generate inputs
+  const handleFilterByDayClick = (day) => {
+    dispatch(FilterActionCreators.setFilterByDate(day.toLocaleDateString()));
+    setShowCalendar(false);
+  };
+
+  const handleCardDate = (e) => {
+    let day = e.target.value
+    setDate(day.split('-').reverse().join('.'))
+  }
+
+  //* generate inputs
   const [listItem, setInputList] = useState([
     { itemValue: "", isComplete: false, id: `${Date.now()}` },
   ]);
@@ -77,7 +90,7 @@ const NavigationContainer = () => {
     e.preventDefault();
     const newList = {
       listTitle,
-      date: getDate(),
+      date,
       category,
       listItem,
       isFavorites,
@@ -99,6 +112,7 @@ const NavigationContainer = () => {
     }
     dispatch(ListsActionCreators.addCategory(newCategory));
     setShowCategoryModal(false);
+    alert.success('Category created!')
   };
   // !
   const handleLogout = () => {
@@ -119,7 +133,6 @@ const NavigationContainer = () => {
     };
   }, []);
 
-  // const isTabletOrMobile = useMediaQuery({ query: "(max-width: 990px)" });
 
   const [toggleDrawer, setToggleDrawer] = useState(false);
   const showSidebar = () => setToggleDrawer(!toggleDrawer);
@@ -127,6 +140,7 @@ const NavigationContainer = () => {
   const onCloseModalHandler = () => {
     setListTitle("");
     setCategory("");
+    // setDate('');
     setInputList([{ itemValue: "", isComplete: false, id: `${Date.now()}` }]);
     setIsFavorites(false);
     setShowModal(false);
@@ -147,10 +161,15 @@ const NavigationContainer = () => {
         handleInputChange={handleInputChange}
         handleRemoveClick={handleRemoveClick}
         handleAddClick={handleAddClick}
+        handleCardDate={handleCardDate}
+        date={date}
       />
-      {/* {isTabletOrMobile && ( */}
+
       <Drawer showSidebar={showSidebar} toggleDrawer={toggleDrawer}>
         <ContainerDrawer toggleDrawer={toggleDrawer}>
+          <DrawerButton onClick={showSidebar}  >
+            <FontAwesomeIcon icon={faTimes} />
+          </DrawerButton>
           <NavigationItems
             lists={lists}
             searchText={searchText}
@@ -163,11 +182,14 @@ const NavigationContainer = () => {
             handleSearch={handleSearch}
             handleFilter={handleFilter}
             filterFavorites={filterFavorites}
+            openAddCategoryModal={setShowCategoryModal}
             user={user}
+            handleDayClick={handleFilterByDayClick}
+            filterByDate={filterByDate}
           />
         </ContainerDrawer>
       </Drawer>
-      {/* )} */}
+
       <Navbar scrolled={scrolled}>
         <ContainerNav>
           <NavigationItems
@@ -185,6 +207,8 @@ const NavigationContainer = () => {
             user={user}
             showSidebar={showSidebar}
             openAddCategoryModal={setShowCategoryModal}
+            handleDayClick={handleFilterByDayClick}
+            filterByDate={filterByDate}
           />
         </ContainerNav>
       </Navbar>

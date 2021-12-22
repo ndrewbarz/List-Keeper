@@ -9,7 +9,6 @@ const ConfirmationModalDelete = ({ setShowConfirmation, handleDelete, deleteId, 
         <CustomModal
             onClose={() => setShowConfirmation(false)}
             showModal={showConfirmation}
-            // title={`Are you sure want to delete "${listTitle || 'this'}" card?`}
             title={" "}
             actionFooterBar={
                 <>
@@ -33,7 +32,7 @@ const ConfirmationModalDelete = ({ setShowConfirmation, handleDelete, deleteId, 
                 </>
             }
         >
-            <h2 style={{ textAlign: "center" }}>{`Are you sure want to delete "${listTitle || 'this'}" card?`}</h2>
+            <h2 style={{ textAlign: "center" }}>{`Are you sure want to delete "${listTitle || `this`}" card?`}</h2>
         </CustomModal>
     )
 }

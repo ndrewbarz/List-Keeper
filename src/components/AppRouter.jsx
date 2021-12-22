@@ -9,8 +9,8 @@ const AppRouter = () => {
   const targetRoutes = isAuth ? privateRoutes : publicRoutes;
 
   useEffect(() => {
-    navigate("/login");
-  }, []);
+    !isAuth ? navigate("/login") : navigate('/')
+  }, [isAuth]);
 
   return (
     <Routes>

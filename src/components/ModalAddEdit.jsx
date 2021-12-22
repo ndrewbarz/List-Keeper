@@ -17,12 +17,10 @@ import CustomButton from "../common/Button/CustomButton";
 import CustomModal from "../common/Modal/CustomModal";
 import CustomSelect from "../common/Select/CustomSelect";
 
-// import { categories } from "../utils/categories";
 import { useSelector } from "react-redux";
 
 const ModalAddEdit = ({
   showModal,
-  setShowModal,
   saveList,
   setListTitle,
   setCategory,
@@ -33,9 +31,11 @@ const ModalAddEdit = ({
   setIsFavorites,
   current,
   onClose,
+  handleCardDate,
+  date,
 }) => {
   const [favorites, setFavorites] = useState(null);
-  const { categories } = useSelector((state) => state.lists);
+  const { categories } = useSelector((state) => state.userData);
 
   useEffect(() => {
     setFavorites(current?.isFavorites);
@@ -73,42 +73,53 @@ const ModalAddEdit = ({
       }
     >
       <ModalForm onSubmit={saveList}>
-        <label htmlFor="list-title"> List Title</label>
+        <label htmlFor="list-title">Title of your card</label>
         <ModalFormInput
           defaultValue={current ? current.listTitle : ""}
           type="text"
           name="list-title"
           id="list-title"
           required
+          placeholder="Enter Card Title"
           onChange={(e) => setListTitle(e.target.value)}
         />
 
-        <label htmlFor="list-category">
-          Select category or create your own in navbar menu
-        </label>
         {/*//! SELECT */}
+        <label htmlFor="list-category">
+          Select category and date
+          <br /> Also you can create your own category in navbar menu
+        </label>
         <div
           style={{
             width: "85%",
             display: "flex",
-            alignItems: "baseline",
+            alignItems: "center",
+            justifyContent: "space-between",
           }}
         >
-          {/* <ModalFormInput
-            defaultValue={""}
-            type="text"
-            name="list-category"
-            id="list-category"
-            required
-            onChange={(e) => setCategory(e.target.value)}
-          /> */}
           <CustomSelect
             options={categories}
             title={current ? current.category : "Select category"}
             setCategory={setCategory}
           />
+          <input
+            type="date"
+            name=""
+            id=""
+            // placeholder={date}
+            // defaultValue={date}
+            // value={date}
+            // required
+            onChange={handleCardDate}
+            style={{
+              padding: "9px",
+              cursor: "pointer",
+              borderRadius: "5px",
+              border: "0",
+            }}
+          />
         </div>
-        <label htmlFor="list-items">Add shopping items</label>
+        <label htmlFor="list-items">Add some card items</label>
         <div
           style={{
             overflow: "auto",

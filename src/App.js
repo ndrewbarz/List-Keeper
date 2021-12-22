@@ -6,6 +6,9 @@ import { AuthActionCreators } from "./store/reducers/auth/action-creators";
 import { useNavigate } from "react-router-dom";
 import { Wrapper } from "./styled/style";
 import NavigationContainer from "./components/Navigation/NavigationContainer";
+// Alert
+import { positions, Provider } from "react-alert";
+import AlertTemplate from "react-alert-template-basic";
 
 const GlobalStyle = createGlobalStyle`
   html {
@@ -22,10 +25,16 @@ const GlobalStyle = createGlobalStyle`
   }
 `;
 
+const options = {
+  timeout: 5000,
+  position: positions.BOTTOM_CENTER,
+};
+
 const App = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const token = localStorage.getItem("accessToken");
+
   useEffect(() => {
     if (token) {
       dispatch(AuthActionCreators.checkIsAuth());
@@ -34,11 +43,13 @@ const App = () => {
   }, []);
   return (
     <>
-      <GlobalStyle />
-      <NavigationContainer />
-      <Wrapper>
-        <AppRouter />
-      </Wrapper>
+      <Provider template={AlertTemplate} {...options}>
+        <GlobalStyle />
+        <NavigationContainer />
+        <Wrapper>
+          <AppRouter />
+        </Wrapper>
+      </Provider>
     </>
   );
 };

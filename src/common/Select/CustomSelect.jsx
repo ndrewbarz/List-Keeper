@@ -33,6 +33,7 @@ const CustomSelect = ({ title, options, setCategory }) => {
               key={option.id}
             >
               {option.name}
+              <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: `${option.color}` }}>{''}</div>
             </ListItem>
           ))}
         </DropDownList>

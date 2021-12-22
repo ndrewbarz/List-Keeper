@@ -5,15 +5,15 @@ export const SET_SEARCH_TEXT = "SET_SEARCH_TEXT";
 export const CLEAR_SEARCH_TEXT = "CLEAR_SEARCH_TEXT";
 
 const initialState = {
-  filter: false,
+  filterFavorites: false,
   filterByDate: "",
   searchText: "",
 };
 
-export default function filterReducer(state = initialState, action) {
+export default function filter(state = initialState, action) {
   switch (action.type) {
     case SET_FILTER:
-      return { ...state, filter: action.payload };
+      return { ...state, filterFavorites: action.payload };
 
     case SET_FILTER_BY_DATE:
       return { ...state, filterByDate: action.payload };

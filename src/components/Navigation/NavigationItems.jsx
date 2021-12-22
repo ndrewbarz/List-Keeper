@@ -13,6 +13,8 @@ import Link, {
   LogoutName,
   LogoText,
   DrawerButton,
+  LoginBox,
+  NavlinkStyled,
 } from "../../styled/style";
 import plus from "../../assets/add.png";
 import addCategoryIcon from '../../assets/addCategoryIcon.svg';
@@ -25,9 +27,12 @@ import logoIcon from "../../assets/logo.png";
 import CustomButton from "../../common/Button/CustomButton";
 
 import SearchBar from "../SearchBar";
-import Calendar from "../Calendar";
+import Calendar from "./Calendar/Calendar";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
+
+import DayPicker from "react-day-picker";
+import "react-day-picker/lib/style.css";
 
 const NavigationItems = ({
   isAuth,
@@ -43,7 +48,9 @@ const NavigationItems = ({
   user,
   handleLogout,
   showSidebar,
-  openAddCategoryModal
+  openAddCategoryModal,
+  filterByDate,
+  handleDayClick
 }) => {
   return (
     <>
@@ -72,7 +79,12 @@ const NavigationItems = ({
             <Calendar
               showCalendar={showCalendar}
               setShowCalendar={setShowCalendar}
-            />
+            >
+              <DayPicker selectedDays={filterByDate} onDayClick={handleDayClick} />
+              <p style={{ textAlign: "center" }}>
+                {filterByDate ? filterByDate : "Please select a day 👻"}
+              </p>
+            </Calendar>
             {filterFavorites ? (
               <FavoriteIcon
                 src={favoriteIconActive}
@@ -117,14 +129,14 @@ const NavigationItems = ({
           </LogoutBox>
         </>
       ) : (
-        <>
+        <LoginBox>
           <CustomButton variant="solid" color="primary">
-            <Link to={"/login"}>Login</Link>
+            <NavlinkStyled to={"/login"}>Login</NavlinkStyled >
           </CustomButton>
           <CustomButton variant="solid" color="primary">
-            <Link to={"/registration"}>Registration</Link>
+            <NavlinkStyled to={"/registration"}>Registration</NavlinkStyled >
           </CustomButton>
-        </>
+        </LoginBox>
       )}
     </>
   );

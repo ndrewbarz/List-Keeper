@@ -8,26 +8,28 @@ import { shareList } from "../../utils/shareList";
 import Home from "./Home";
 import ModalAddEdit from "../ModalAddEdit";
 import ConfirmationModalDelete from "./ConfirmationModalDelete/ConfirmationModalDelete";
+import { useAlert } from "react-alert";
 
 const HomeContainer = () => {
   const dispatch = useDispatch();
   const { id } = useSelector((state) => state.auth.user);
-  const { lists, current, loading, } = useSelector(
-    (state) => state.lists
+  const { lists, current, loading } = useSelector((state) => state.userData);
+  const { filterFavorites, filterByDate, searchText } = useSelector(
+    (state) => state.filter
   );
-  const { filter, filterByDate, searchText } = useSelector((state) => state.filter);
 
   const [isFetched, setIsFetched] = useState(false);
   const [isToggle, setIsToggle] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [listTitle, setListTitle] = useState("");
   const [category, setCategory] = useState("");
+  const [date, setDate] = useState(getDate());
   const [listItem, setInputList] = useState(current?.listItem || []);
   const [isCompleteItems, setIsCompleteItems] = useState([]);
   const [isFavorites, setIsFavorites] = useState(false);
-
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [deleteId, setDeleteId] = useState("");
+  const alert = useAlert();
 
   //* generate inputs
   const handleInputChange = (idx, e) => {
@@ -53,23 +55,10 @@ const HomeContainer = () => {
   };
   //* generate inputs END
 
-  // Save changed list
-  const saveList = (e) => {
-    e.preventDefault();
-    const updList = {
-      id: current._id,
-      listTitle,
-      date: getDate(),
-      category,
-      listItem,
-      isFavorites,
-    };
-    dispatch(ListsActionCreators.updateList(updList));
-
-    if (!loading) {
-      dispatch(ListsActionCreators.clearCurrentList(current));
-      setShowModal(false);
-    }
+  //! HANDLE FUNC
+  const handleCardDate = (e) => {
+    let day = e.target.value;
+    setDate(day.split("-").reverse().join("."));
   };
 
   const handleCheckbox = (e, list) => {
@@ -110,21 +99,41 @@ const HomeContainer = () => {
       setIsToggle([...isToggle, id]);
     }
   };
+  // Delete  card
+  const handleDelete = (deleteId) => {
+    setShowConfirmation(!showConfirmation);
+    dispatch(ListsActionCreators.deleteList(deleteId));
+    alert.info("Card deleted!");
+  };
+  // Edit  card
+  const handleEdit = (list) => {
+    setShowModal(!showModal);
+    dispatch(ListsActionCreators.setCurrentList(list));
+  };
 
   const handleShowConfirmationDeleteModal = (id) => {
     setDeleteId(id);
     setShowConfirmation(true);
   };
 
-  //! Delete list card
-  const handleDelete = (deleteId) => {
-    setShowConfirmation(!showConfirmation);
-    dispatch(ListsActionCreators.deleteList(deleteId));
-  };
+  // Save changed list
+  const saveList = (e) => {
+    e.preventDefault();
+    const updList = {
+      id: current._id,
+      listTitle,
+      date,
+      category,
+      listItem,
+      isFavorites,
+    };
+    dispatch(ListsActionCreators.updateList(updList));
 
-  const handleEdit = (list) => {
-    setShowModal(!showModal);
-    dispatch(ListsActionCreators.setCurrentList(list));
+    if (!loading) {
+      dispatch(ListsActionCreators.clearCurrentList(current));
+      setShowModal(false);
+    }
+    alert.info("Card changed!");
   };
 
   // Filtering lists by date, search text or is favorites
@@ -132,13 +141,16 @@ const HomeContainer = () => {
     if (lists) {
       return lists.filter(
         (list) =>
-          list.listTitle.toLowerCase().includes(searchText.toLowerCase()) &&
+          list.listTitle
+            .toLowerCase()
+            .replace(/ /g, "")
+            .includes(searchText.toLowerCase().replace(/ /g, "")) &&
           (filterByDate !== "" ? list.date === filterByDate : true) &&
-          (filter ? list.isFavorites : true)
+          (filterFavorites ? list.isFavorites : true)
       );
     }
-  }, [filterByDate, lists, searchText, filter]);
-
+  }, [filterByDate, lists, searchText, filterFavorites]);
+  // Clear filters
   const clearFilterDateHandler = () => {
     dispatch(FilterActionCreators.clearFilterDate());
   };
@@ -152,6 +164,7 @@ const HomeContainer = () => {
       setIsFetched(true);
     }
 
+    // Set complete list/card items
     const arr = lists.reduce((acc, list) => [...acc, ...list.listItem], []);
 
     setIsCompleteItems(
@@ -167,6 +180,7 @@ const HomeContainer = () => {
   useEffect(() => {
     if (current) {
       setListTitle(current?.listTitle);
+      setDate(current?.date);
       setCategory(current?.category);
       setInputList(current?.listItem);
       setIsFavorites(current?.isFavorites);
@@ -177,16 +191,18 @@ const HomeContainer = () => {
     if (current) {
       setListTitle(current?.listTitle);
       setCategory(current?.category);
+      setDate(current?.date);
       setInputList(current?.listItem);
       setIsFavorites(current?.isFavorites);
     } else {
       setListTitle("");
       setCategory("");
+      // setDate(date);
       setInputList([{ itemValue: "", isComplete: false, id: `${Date.now()}` }]);
       setIsFavorites(false);
     }
     setShowModal(false);
-  }
+  };
   return (
     <>
       {loading && (
@@ -233,6 +249,8 @@ const HomeContainer = () => {
         handleRemoveClick={handleRemoveClick}
         handleAddClick={handleAddClick}
         current={current}
+        setDate={setDate}
+        handleCardDate={handleCardDate}
       />
     </>
   );

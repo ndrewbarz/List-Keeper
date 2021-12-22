@@ -16,6 +16,7 @@ const CategoryCreateModal = ({
     <CustomModal
       onClose={() => setShowCategoryModal(false)}
       showModal={showCategoryModal}
+      withCloseButton
       title={`Create new category`}
       actionFooterBar={
         <CustomButton
