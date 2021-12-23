@@ -51,7 +51,7 @@ export const AuthActionCreators = {
     try {
       const refreshToken = localStorage.getItem("refreshToken");
       const response = await AuthService.refresh(refreshToken);
-      console.log(response);
+      // console.log(response);
       localStorage.setItem("accessToken", response.data.accessToken);
       localStorage.setItem("refreshToken", response.data.refreshToken);
 

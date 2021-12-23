@@ -1,7 +1,12 @@
 import styled from "styled-components";
+import {
+  ColorPickerContainer,
+  ColorPickerInput,
+} from "../../components/ColorPicker";
+import { ModalFormInput } from "../../styled/style";
 
 export const DropDownContainer = styled.div`
-  width: 260px;
+  width: 300px;
   user-select: none;
   margin: 10px 0;
   position: relative;
@@ -36,6 +41,18 @@ export const DropDownList = styled.ul`
   font-weight: 500;
   color: #333;
   width: 100%;
+  height: 320px;
+  overflow: hidden auto;
+  &::-webkit-scrollbar {
+    width: 5px;
+  }
+  &::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: slategrey;
+    outline: none;
+  }
 `;
 
 export const ListItem = styled.li`
@@ -48,4 +65,29 @@ export const ListItem = styled.li`
   &:hover {
     background: #f4f4f4;
   }
+  ${ModalFormInput} {
+    width: 58%;
+    margin-bottom: 0;
+    font-size: 14px;
+    position: relative;
+  }
+  &:first-child {
+    position: relative;
+  }
+  ${ColorPickerContainer} {
+    position: absolute;
+    left: 160px;
+    width: 17px;
+    height: 17px;
+  }
+  ${ColorPickerInput} {
+    width: 30px;
+    height: 30px;
+  }
+`;
+
+export const ListItemMenuBox = styled.div`
+  display: flex;
+  align-items: center;
+  margin-left: 5px;
 `;

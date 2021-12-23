@@ -2,13 +2,21 @@ import React, { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { FilterActionCreators } from "../../store/reducers/filter/action-creator";
 import { ListsActionCreators } from "../../store/reducers/userData/action-creators";
-import { LoadersStyled } from "../../styled/style";
+import {
+  GridViewIconStyled,
+  LoadersStyled,
+  RowViewIconStyled,
+} from "../../styled/style";
 import { getDate } from "../../utils/getDate";
 import { shareList } from "../../utils/shareList";
 import Home from "./Home";
 import ModalAddEdit from "../ModalAddEdit";
 import ConfirmationModalDelete from "./ConfirmationModalDelete/ConfirmationModalDelete";
 import { useAlert } from "react-alert";
+import HomeGrid from "./HomeGrid";
+
+import GridView from "../../assets/gridView.png";
+import RowView from "../../assets/rowView.png";
 
 const HomeContainer = () => {
   const dispatch = useDispatch();
@@ -23,6 +31,7 @@ const HomeContainer = () => {
   const [showModal, setShowModal] = useState(false);
   const [listTitle, setListTitle] = useState("");
   const [category, setCategory] = useState("");
+  const [color, setColor] = useState("#141E30");
   const [date, setDate] = useState(getDate());
   const [listItem, setInputList] = useState(current?.listItem || []);
   const [isCompleteItems, setIsCompleteItems] = useState([]);
@@ -30,6 +39,8 @@ const HomeContainer = () => {
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [deleteId, setDeleteId] = useState("");
   const alert = useAlert();
+
+  const colorPics = (e) => setColor(e.target.value);
 
   //* generate inputs
   const handleInputChange = (idx, e) => {
@@ -56,6 +67,21 @@ const HomeContainer = () => {
   //* generate inputs END
 
   //! HANDLE FUNC
+
+  //! Create Category
+  const handleCreateCategory = (e) => {
+    e.preventDefault();
+    const newCategory = {
+      id: Date.now(),
+      name: category,
+      color: color,
+    };
+    dispatch(ListsActionCreators.addCategory(newCategory));
+    setCategory("");
+    alert.success("Category created!");
+  };
+  // !
+
   const handleCardDate = (e) => {
     let day = e.target.value;
     setDate(day.split("-").reverse().join("."));
@@ -203,26 +229,59 @@ const HomeContainer = () => {
     }
     setShowModal(false);
   };
+
+  // !CARD VIEW
+  const [gridView, setGridView] = useState(false);
+  const changeViewHandler = () => {
+    localStorage.setItem("gridView", gridView);
+    setGridView(!gridView);
+  };
+
   return (
     <>
       {loading && (
         <LoadersStyled type="Rings" color="#00BFFF" height={80} width={80} />
       )}
-
-      <Home
-        filteredCards={filteredCards}
-        onEdit={handleEdit}
-        onDelete={handleShowConfirmationDeleteModal}
-        onToggle={handleToggle}
-        isToggle={isToggle}
-        isCompleteItems={isCompleteItems}
-        handleCheckbox={handleCheckbox}
-        shareList={shareList}
-        searchText={searchText}
-        filterByDate={filterByDate}
-        clearFilterDateHandler={clearFilterDateHandler}
-        clearSearchTextHandler={clearSearchTextHandler}
-      />
+      {
+        <div style={{ position: "absolute", top: "65px", right: "105px" }}>
+          {gridView ? (
+            <GridViewIconStyled src={GridView} onClick={changeViewHandler} />
+          ) : (
+            <RowViewIconStyled src={RowView} onClick={changeViewHandler} />
+          )}
+        </div>
+      }
+      {!gridView ? (
+        <Home
+          filteredCards={filteredCards}
+          onEdit={handleEdit}
+          onDelete={handleShowConfirmationDeleteModal}
+          onToggle={handleToggle}
+          isToggle={isToggle}
+          isCompleteItems={isCompleteItems}
+          handleCheckbox={handleCheckbox}
+          shareList={shareList}
+          searchText={searchText}
+          filterByDate={filterByDate}
+          clearFilterDateHandler={clearFilterDateHandler}
+          clearSearchTextHandler={clearSearchTextHandler}
+        />
+      ) : (
+        <HomeGrid
+          filteredCards={filteredCards}
+          onEdit={handleEdit}
+          onDelete={handleShowConfirmationDeleteModal}
+          onToggle={handleToggle}
+          isToggle={isToggle}
+          isCompleteItems={isCompleteItems}
+          handleCheckbox={handleCheckbox}
+          shareList={shareList}
+          searchText={searchText}
+          filterByDate={filterByDate}
+          clearFilterDateHandler={clearFilterDateHandler}
+          clearSearchTextHandler={clearSearchTextHandler}
+        />
+      )}
 
       {/* //* CONFIRMATION DELETE MODAL */}
       {showConfirmation && (
@@ -251,6 +310,10 @@ const HomeContainer = () => {
         current={current}
         setDate={setDate}
         handleCardDate={handleCardDate}
+        handleCreateCategory={handleCreateCategory}
+        category={category}
+        setColor={colorPics}
+        color={color}
       />
     </>
   );

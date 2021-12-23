@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-const ColorPickerContainer = styled.div`
+export const ColorPickerContainer = styled.div`
   position: relative;
   overflow: hidden;
   width: 40px;
@@ -8,7 +8,7 @@ const ColorPickerContainer = styled.div`
   border: none;
   border-radius: 40px;
 `;
-const ColorPickerInput = styled.input`
+export const ColorPickerInput = styled.input`
   cursor: pointer;
   position: absolute;
   right: -8px;

@@ -477,6 +477,24 @@ export const CardBody = styled.div`
   background: #fff;
 `;
 
+export const CardItemsBox = styled.div`
+  overflow: auto;
+  width: 100%;
+  height: 200px;
+  overflow-x: hidden;
+  box-sizing: content-box;
+  &::-webkit-scrollbar {
+    width: 5px;
+  }
+  &::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: slategrey;
+    outline: none;
+  }
+`;
+
 //
 export const Label = styled.label`
   display: flex;
@@ -566,6 +584,24 @@ export const LogoIcon = styled(IconStyled)`
   width: 40px;
   height: 40px;
   margin-right: 10px;
+`;
+
+export const OptionMenuIconStyled = styled(IconStyled)`
+  src: ${(props) => props.src};
+  width: 25px;
+  height: 25px;
+`;
+
+export const OptionDeleteIconStyled = styled(IconStyled)`
+  src: ${(props) => props.src};
+  width: 25px;
+  height: 25px;
+`;
+
+export const OptionSaveIconStyled = styled(IconStyled)`
+  src: ${(props) => props.src};
+  width: 25px;
+  height: 25px;
 `;
 
 export const PreviewImgStyled = styled(IconStyled)`
@@ -675,3 +711,30 @@ export const ModalFooter = styled.div`
     margin: 20px 10px 0 10px;
   }
 `;
+
+// !------------------------------------CARD GRID
+
+export const WrapperGrid = styled(Wrapper)`
+  // flex-direction: column;
+`;
+export const CardWrapperGrid = styled(CardWrapper)`
+  width: 80%;
+  display: grid;
+  grid-template-columns: 2fr 2fr 1fr 1fr 1fr 0.5fr;
+  align-items: center;
+  color: #fff;
+  padding: 5px 5px 5px 20px;
+  justify-items: center;
+`;
+
+export const GridViewIconStyled = styled(IconStyled)`
+  src: ${(props) => props.src};
+  width: 25px;
+  height: 25px;
+`;
+export const RowViewIconStyled = styled(IconStyled)`
+  src: ${(props) => props.src};
+  width: 25px;
+  height: 25px;
+`;
+// !------------------------------------

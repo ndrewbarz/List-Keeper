@@ -12,6 +12,7 @@ import {
   EditIcon,
   FavoriteIcon,
   FavoriteIconActive,
+  CardWrapperGrid,
 } from "../styled/style";
 import deleteIcon from "../assets/delete.svg";
 import editIcon from "../assets/editIcon.svg";
@@ -22,7 +23,7 @@ import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { hexToRGB } from "../utils/hexToRGBA";
 
-const Card = ({
+const CardGrid = ({
   onClick,
   children,
   onEdit,
@@ -54,20 +55,22 @@ const Card = ({
     dispatch(thunk(updList));
   };
   return (
-    // <CardWrapper onClick={onClick} style={{ background: !!cardCategory ? cardCategory.color : 'none' }} >
-    <CardWrapper
-      onClick={onClick}
-      style={{
-        background: !!cardCategory ? hexToRGB(cardCategory.color, 0.7) : "none",
-        border: `1px solid ${cardCategory?.color}`,
-      }}
-    >
-      <CardInfo>
-        <CardInfoLeft>
-          <CardTitle>{list.listTitle}</CardTitle>
-          <CardCategory>{list.category}</CardCategory>
-        </CardInfoLeft>
-        <CardInfoRight>
+    <>
+      <CardWrapperGrid
+        onClick={onClick}
+        style={{
+          background: !!cardCategory
+            ? hexToRGB(cardCategory?.color, 0.5)
+            : "none",
+          border: `1px solid ${cardCategory?.color}`,
+        }}
+      >
+        <span>{list.listTitle}</span>
+        <span>{list.category}</span>
+        <span>{list.date}</span>
+        <span>{list.listItem.length}</span>
+        <span>
+          {" "}
           {!isFavorites ? (
             <FavoriteIcon
               src={favoriteIcon}
@@ -83,26 +86,20 @@ const Card = ({
               onClick={updateIsFavorite}
             />
           )}
+        </span>
+        <span
+          style={{
+            display: "flex",
+            alignItems: "center",
+            "& > img": { margin: "0 5px" },
+          }}
+        >
           <EditIcon src={editIcon} width="25px" onClick={onEdit} />
           <DeleteIcon src={deleteIcon} width="25px" onClick={onDelete} />
-          <span>{list.date}</span>
-        </CardInfoRight>
-        {toggleRotate ? (
-          <ArrowIcon
-            src={arrow}
-            width="25px"
-            style={{
-              transform: "rotate(180deg)",
-            }}
-            onClick={toggleRotateEffect}
-          />
-        ) : (
-          <ArrowIcon src={arrow} width="25px" onClick={toggleRotateEffect} />
-        )}
-      </CardInfo>
-      <CardBody>{children}</CardBody>
-    </CardWrapper>
+        </span>
+      </CardWrapperGrid>
+    </>
   );
 };
 
-export default Card;
+export default CardGrid;

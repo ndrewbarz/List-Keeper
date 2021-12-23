@@ -6,6 +6,7 @@ import {
   ModalAddIcon,
   FavoriteIcon,
   FavoriteIconActive,
+  CardItemsBox,
 } from "../styled/style";
 import deleteItemIcon from "../assets/deleteItem.svg";
 import addItemIcon from "../assets/addItem.png";
@@ -32,6 +33,10 @@ const ModalAddEdit = ({
   current,
   onClose,
   handleCardDate,
+  handleCreateCategory,
+  category,
+  color,
+  setColor,
   date,
 }) => {
   const [favorites, setFavorites] = useState(null);
@@ -101,6 +106,10 @@ const ModalAddEdit = ({
             options={categories}
             title={current ? current.category : "Select category"}
             setCategory={setCategory}
+            handleCreateCategory={handleCreateCategory}
+            category={category}
+            color={color}
+            setColor={setColor}
           />
           <input
             type="date"
@@ -120,15 +129,7 @@ const ModalAddEdit = ({
           />
         </div>
         <label htmlFor="list-items">Add some card items</label>
-        <div
-          style={{
-            overflow: "auto",
-            width: "100%",
-            height: "200px",
-            overflowX: "hidden",
-            boxSizing: "content-box",
-          }}
-        >
+        <CardItemsBox>
           {listItem.map((field, idx) => {
             return (
               <div
@@ -165,7 +166,7 @@ const ModalAddEdit = ({
               </div>
             );
           })}
-        </div>
+        </CardItemsBox>
 
         {
           <ModalAddIcon

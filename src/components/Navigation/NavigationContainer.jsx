@@ -112,6 +112,7 @@ const NavigationContainer = () => {
     }
     dispatch(ListsActionCreators.addCategory(newCategory));
     setShowCategoryModal(false);
+    setColor('#141E30')
     alert.success('Category created!')
   };
   // !
@@ -162,7 +163,11 @@ const NavigationContainer = () => {
         handleRemoveClick={handleRemoveClick}
         handleAddClick={handleAddClick}
         handleCardDate={handleCardDate}
+        handleCreateCategory={handleCreateCategory}
+        category={category}
         date={date}
+        setColor={colorPics}
+        color={color}
       />
 
       <Drawer showSidebar={showSidebar} toggleDrawer={toggleDrawer}>
