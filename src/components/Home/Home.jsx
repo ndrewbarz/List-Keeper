@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Card from "../Card";
 import { ListsActionCreators } from "../../store/reducers/userData/action-creators";
 import {
@@ -24,7 +24,48 @@ const Home = ({
   filterByDate,
   clearFilterDateHandler,
   clearSearchTextHandler,
+  setSortedCards
 }) => {
+
+  // const [cardList, setCardList] = useState(filteredCards)
+  const [currentDragCard, setCurrentDragCard] = useState(null)
+
+  const dragStartHandler = (e, list) => {
+    setCurrentDragCard(list)
+    setTimeout(() => {
+      e.target.style.display = 'none'
+
+    }, 0);
+
+  }
+  const dragEndHandler = (e) => {
+    setTimeout(() => {
+      e.target.style.display = 'flex'
+    }, 0);
+  }
+
+  const dragLeaveHandler = (e) => {
+    setTimeout(() => {
+    }, 0);
+  }
+
+  const dragOverHandler = (e) => {
+    e.preventDefault()
+  }
+  const dropHandler = (e, list) => {
+    e.preventDefault()
+    const dropArr = [...filteredCards]
+    const currentIndex = dropArr.indexOf(currentDragCard)
+    const [rearderedItem] = dropArr.splice(currentIndex, 1)
+
+    const dropIndex = filteredCards.indexOf(list)
+    dropArr.splice(dropIndex, 0, rearderedItem)
+    setSortedCards(dropArr)
+
+    // filteredCards = filteredCards.filter((item) => item !== item[currentIndex])
+    // setCardList(items)
+  }
+
   return (
     <>
       <RemoveFilterBox>
@@ -51,6 +92,13 @@ const Home = ({
             onDelete={() => onDelete(list._id)}
             onToggle={() => onToggle(list._id)}
             thunk={ListsActionCreators.updateList}
+
+            onDragStart={(e) => dragStartHandler(e, list)}
+            onDragLeave={(e) => dragLeaveHandler(e)}
+            onDragEnd={(e) => dragEndHandler(e)}
+            onDragOver={(e) => dragOverHandler(e)}
+            onDrop={(e) => dropHandler(e, list)}
+            draggble={true}
           >
             {isToggle.includes(list._id) &&
               list.listItem.map((item) => (

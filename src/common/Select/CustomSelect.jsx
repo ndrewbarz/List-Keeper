@@ -19,7 +19,6 @@ import OptionMenuIcon from "../../assets/option-menu.png";
 import OptionSaveIcon from "../../assets/option-save.png";
 import OptionDeleteIcon from "../../assets/option-delete.svg";
 import ColorPicker from "../../components/ColorPicker";
-import { useSelector } from "react-redux";
 
 const CustomSelect = ({
   title,

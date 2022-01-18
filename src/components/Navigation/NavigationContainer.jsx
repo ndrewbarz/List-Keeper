@@ -9,7 +9,6 @@ import Navbar from "./Navbar";
 import Drawer from "./Drawer";
 import NavigationItems from "./NavigationItems";
 
-// import { useMediaQuery } from "react-responsive";
 import { ContainerDrawer, ContainerNav, DrawerButton } from "../../styled/style";
 import ModalAddEdit from "../ModalAddEdit";
 import CategoryCreateModal from "./CategoryCreateModal/CategoryCreateModal";
@@ -84,7 +83,7 @@ const NavigationContainer = () => {
       ]);
   };
 
-  //
+  //*
 
   const saveList = (e) => {
     e.preventDefault();
@@ -101,6 +100,8 @@ const NavigationContainer = () => {
     setInputList([{ itemValue: "", isComplete: false, id: `${Date.now()}` }]);
     setIsFavorites(false);
     setShowModal(false);
+    alert.success('Card added!')
+
   };
   //! Create Category
   const handleCreateCategory = (e) => {

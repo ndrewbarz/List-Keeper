@@ -1,49 +1,34 @@
-import React, { useState } from "react";
+import React from "react";
 import {
-  CardWrapper,
-  CardTitle,
-  CardBody,
-  CardCategory,
-  CardInfoLeft,
-  CardInfoRight,
-  CardInfo,
-  DeleteIcon,
-  ArrowIcon,
-  EditIcon,
   FavoriteIcon,
   FavoriteIconActive,
   CardWrapperGrid,
+  ShareLink,
 } from "../styled/style";
-import deleteIcon from "../assets/delete.svg";
-import editIcon from "../assets/editIcon.svg";
-import arrow from "../assets/arrow.png";
 import favoriteIcon from "../assets/favoriteIcon.png";
 import favoriteIconActive from "../assets/favoriteIconActive.png";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { hexToRGB } from "../utils/hexToRGBA";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faEdit,
+  faShareSquare,
+  faTrashAlt,
+} from "@fortawesome/free-solid-svg-icons";
 
 const CardGrid = ({
   onClick,
-  children,
   onEdit,
   onDelete,
-  onToggle,
   isFavorites,
   id,
   list,
   thunk,
+  shareList,
 }) => {
   const dispatch = useDispatch();
-  const [toggleRotate, setToggleRotate] = useState(false);
-
   const { categories } = useSelector((state) => state.userData);
-
-  const toggleRotateEffect = () => {
-    setToggleRotate(!toggleRotate);
-    onToggle();
-  };
-
   const cardCategory = categories.find((cat) => cat.name === list.category);
 
   const updateIsFavorite = () => {
@@ -91,11 +76,40 @@ const CardGrid = ({
           style={{
             display: "flex",
             alignItems: "center",
-            "& > img": { margin: "0 5px" },
           }}
         >
-          <EditIcon src={editIcon} width="25px" onClick={onEdit} />
-          <DeleteIcon src={deleteIcon} width="25px" onClick={onDelete} />
+          <FontAwesomeIcon
+            icon={faEdit}
+            size="lg"
+            cursor="pointer"
+            color="#ffffff"
+            onClick={onEdit}
+          />
+          <FontAwesomeIcon
+            icon={faTrashAlt}
+            size="lg"
+            cursor="pointer"
+            color="tomato"
+            style={{ margin: "0 5px" }}
+            onClick={onDelete}
+          />
+          <ShareLink
+            rel="noreferrer"
+            target="_blank"
+            href={`https://t.me/share/url?url=${shareList(
+              list.listTitle,
+              list.date,
+              list.category,
+              list.listItem
+            )}`}
+          >
+            <FontAwesomeIcon
+              icon={faShareSquare}
+              size="lg"
+              cursor="pointer"
+              color="lightblue"
+            />
+          </ShareLink>
         </span>
       </CardWrapperGrid>
     </>

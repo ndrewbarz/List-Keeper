@@ -12,16 +12,15 @@ export const AuthActionCreators = {
       dispatch(AuthActionCreators.setIsLoading(true));
       const response = await AuthService.login(email, password);
 
-      console.log("response", response);
-
       localStorage.setItem("accessToken", response.data.accessToken);
       localStorage.setItem("refreshToken", response.data.refreshToken);
       dispatch(AuthActionCreators.setUser(response.data.user));
       dispatch(AuthActionCreators.setIsAuth(true));
       dispatch(AuthActionCreators.clearError());
     } catch (e) {
-      console.log(e.response.data.message);
+      // console.log(e.response.data.message);
       dispatch(AuthActionCreators.setError(e.response?.data?.message));
+      dispatch(AuthActionCreators.clearError());
     }
   },
   registration: (email, password) => async (dispatch) => {
@@ -35,8 +34,9 @@ export const AuthActionCreators = {
       dispatch(AuthActionCreators.setIsAuth(true));
       dispatch(AuthActionCreators.clearError());
     } catch (e) {
-      console.log(e);
+      // console.log(e);
       dispatch(AuthActionCreators.setError(e.response?.data?.message));
+      dispatch(AuthActionCreators.clearError());
     }
   },
   logout: () => async (dispatch) => {
@@ -57,7 +57,7 @@ export const AuthActionCreators = {
 
       dispatch(AuthActionCreators.setUser(response.data.user));
     } catch (err) {
-      console.log(err);
+      // console.log(err);
     }
   },
 };

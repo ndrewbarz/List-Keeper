@@ -39,6 +39,7 @@ const HomeContainer = () => {
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [deleteId, setDeleteId] = useState("");
   const alert = useAlert();
+  const [sortedCards, setSortedCards] = useState(lists);
 
   const colorPics = (e) => setColor(e.target.value);
 
@@ -164,8 +165,8 @@ const HomeContainer = () => {
 
   // Filtering lists by date, search text or is favorites
   const filteredCards = useMemo(() => {
-    if (lists) {
-      return lists.filter(
+    if (sortedCards) {
+      return sortedCards.filter(
         (list) =>
           list.listTitle
             .toLowerCase()
@@ -175,7 +176,7 @@ const HomeContainer = () => {
           (filterFavorites ? list.isFavorites : true)
       );
     }
-  }, [filterByDate, lists, searchText, filterFavorites]);
+  }, [filterByDate, sortedCards, searchText, filterFavorites]);
   // Clear filters
   const clearFilterDateHandler = () => {
     dispatch(FilterActionCreators.clearFilterDate());
@@ -188,6 +189,8 @@ const HomeContainer = () => {
     if (!isFetched) {
       dispatch(ListsActionCreators.fetchLists(id));
       setIsFetched(true);
+    } else {
+      setSortedCards(lists)
     }
 
     // Set complete list/card items
@@ -231,10 +234,44 @@ const HomeContainer = () => {
   };
 
   // !CARD VIEW
-  const [gridView, setGridView] = useState(false);
+  const localGrid = JSON.parse(localStorage.getItem("gridView"))
+  const [gridView, setGridView] = useState(localGrid);
   const changeViewHandler = () => {
-    localStorage.setItem("gridView", gridView);
+    localStorage.setItem("gridView", !gridView);
     setGridView(!gridView);
+  };
+  // !SORT
+
+  const sortByDate = () => {
+    const sortedArr = [...sortedCards]?.sort((a, b) => {
+      return (
+        Date.parse(new Date(b.date.split(".").reverse().join("-"))) -
+        Date.parse(new Date(a.date.split(".").reverse().join("-")))
+      );
+    });
+    setSortedCards(sortedArr);
+  };
+
+  const sortByTitle = () => {
+    const sortedArr = [...filteredCards]?.sort((a, b) =>
+      a.listTitle.toLowerCase().localeCompare(b.listTitle.toLowerCase())
+    );
+    setSortedCards(sortedArr);
+  };
+
+  const sortByCategory = () => {
+    const sortedArr = [...filteredCards]?.sort((a, b) =>
+      a.category.localeCompare(b.category)
+    );
+    setSortedCards(sortedArr);
+  };
+  const sortByCount = () => {
+    const sortedArr = [...filteredCards]?.sort((a, b) => {
+      if (a.listItem.length < b.listItem.length) return -1;
+      if (a.listItem.length > b.listItem.length) return 1;
+      return 0;
+    });
+    setSortedCards(sortedArr);
   };
 
   return (
@@ -253,6 +290,7 @@ const HomeContainer = () => {
       }
       {!gridView ? (
         <Home
+          setSortedCards={setSortedCards}
           filteredCards={filteredCards}
           onEdit={handleEdit}
           onDelete={handleShowConfirmationDeleteModal}
@@ -268,6 +306,7 @@ const HomeContainer = () => {
         />
       ) : (
         <HomeGrid
+          // filteredCards={sortedCards}
           filteredCards={filteredCards}
           onEdit={handleEdit}
           onDelete={handleShowConfirmationDeleteModal}
@@ -280,6 +319,10 @@ const HomeContainer = () => {
           filterByDate={filterByDate}
           clearFilterDateHandler={clearFilterDateHandler}
           clearSearchTextHandler={clearSearchTextHandler}
+          sortByTitle={sortByTitle}
+          sortByCount={sortByCount}
+          sortByCategory={sortByCategory}
+          sortByDate={sortByDate}
         />
       )}
 

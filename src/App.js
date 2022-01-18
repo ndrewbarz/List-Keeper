@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import AppRouter from "./components/AppRouter";
 import { createGlobalStyle } from "styled-components";
 import { useDispatch } from "react-redux";
 import { AuthActionCreators } from "./store/reducers/auth/action-creators";
 import { useNavigate } from "react-router-dom";
-import { Wrapper, WrapperGrid } from "./styled/style";
+import { Wrapper } from "./styled/style";
 import NavigationContainer from "./components/Navigation/NavigationContainer";
 // Alert
 import { positions, Provider } from "react-alert";
@@ -34,7 +34,6 @@ const App = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const token = localStorage.getItem("accessToken");
-  const gridView = localStorage.getItem("gridView");
 
   useEffect(() => {
     if (token) {
@@ -47,15 +46,9 @@ const App = () => {
       <Provider template={AlertTemplate} {...options}>
         <GlobalStyle />
         <NavigationContainer />
-        {!gridView ? (
-          <Wrapper>
-            <AppRouter />
-          </Wrapper>
-        ) : (
-          <WrapperGrid>
-            <AppRouter />
-          </WrapperGrid>
-        )}
+        <Wrapper>
+          <AppRouter />
+        </Wrapper>
       </Provider>
     </>
   );

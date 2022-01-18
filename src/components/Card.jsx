@@ -32,6 +32,14 @@ const Card = ({
   id,
   list,
   thunk,
+
+  draggble,
+  onDragStart,
+  onDragLeave,
+  onDragEnd,
+  onDragOver,
+  onDrop,
+
 }) => {
   const dispatch = useDispatch();
   const [toggleRotate, setToggleRotate] = useState(false);
@@ -53,6 +61,7 @@ const Card = ({
     };
     dispatch(thunk(updList));
   };
+
   return (
     // <CardWrapper onClick={onClick} style={{ background: !!cardCategory ? cardCategory.color : 'none' }} >
     <CardWrapper
@@ -61,6 +70,12 @@ const Card = ({
         background: !!cardCategory ? hexToRGB(cardCategory.color, 0.7) : "none",
         border: `1px solid ${cardCategory?.color}`,
       }}
+      draggable={draggble}
+      onDragStart={onDragStart}
+      onDragLeave={onDragLeave}
+      onDragEnd={onDragEnd}
+      onDragOver={onDragOver}
+      onDrop={onDrop}
     >
       <CardInfo>
         <CardInfoLeft>

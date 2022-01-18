@@ -4,6 +4,7 @@ import {
   CardItem,
   FilterRemoveButtonStyled,
   FilterRemoveIconStyled,
+  GridTableHeader,
   Label,
   RemoveFilterBox,
   ShareLink,
@@ -11,6 +12,7 @@ import {
 } from "../../styled/style";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import CardGrid from "../CardGrid";
+import upDownArrow from "../../assets/upDownArrow.png";
 const HomeGrid = ({
   filteredCards,
   onEdit,
@@ -24,6 +26,10 @@ const HomeGrid = ({
   filterByDate,
   clearFilterDateHandler,
   clearSearchTextHandler,
+  sortByTitle,
+  sortByCount,
+  sortByCategory,
+  sortByDate,
 }) => {
   return (
     <>
@@ -40,25 +46,24 @@ const HomeGrid = ({
           </FilterRemoveButtonStyled>
         ) : null}
       </RemoveFilterBox>
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "2fr 2fr 1fr 1fr 1fr 0.5fr",
-          justifyItems: "center",
-          width: "80%",
-          margin: "10px",
-          color: "#fff",
-          fontWeight: "bold",
-        }}
-      >
-        <span>Title</span>
-        <span>Category</span>
-        <span>Date</span>
-        <span>Count of items</span>
+      <GridTableHeader>
+        <span onClick={() => sortByTitle()}>
+          Title
+          <img src={upDownArrow} alt="" />
+        </span>
+        <span onClick={() => sortByCategory()}>
+          Category <img src={upDownArrow} alt="" />
+        </span>
+        <span onClick={() => sortByDate()}>
+          Date <img src={upDownArrow} alt="" />
+        </span>
+        <span onClick={() => sortByCount()}>
+          Count items <img src={upDownArrow} alt="" />
+        </span>
         <span>Is Favorite</span>
         <span>Options</span>
-      </div>
-      {filteredCards.length ? (
+      </GridTableHeader>
+      {filteredCards?.length ? (
         filteredCards?.map((list) => (
           <CardGrid
             key={list._id}
@@ -69,6 +74,7 @@ const HomeGrid = ({
             onDelete={() => onDelete(list._id)}
             onToggle={() => onToggle(list._id)}
             thunk={ListsActionCreators.updateList}
+            shareList={shareList}
           >
             {isToggle.includes(list._id) &&
               list.listItem.map((item) => (

@@ -604,6 +604,12 @@ export const OptionSaveIconStyled = styled(IconStyled)`
   height: 25px;
 `;
 
+export const ShareIconStyled = styled(IconStyled)`
+  src: ${(props) => props.src};
+  width: 25px;
+  height: 25px;
+`;
+
 export const PreviewImgStyled = styled(IconStyled)`
   src: ${(src) => src};
   width: 410px;
@@ -720,7 +726,7 @@ export const WrapperGrid = styled(Wrapper)`
 export const CardWrapperGrid = styled(CardWrapper)`
   width: 80%;
   display: grid;
-  grid-template-columns: 2fr 2fr 1fr 1fr 1fr 0.5fr;
+  grid-template-columns: 2fr 2fr 1fr 2fr 1fr 1fr;
   align-items: center;
   color: #fff;
   padding: 5px 5px 5px 20px;
@@ -736,5 +742,25 @@ export const RowViewIconStyled = styled(IconStyled)`
   src: ${(props) => props.src};
   width: 25px;
   height: 25px;
+`;
+
+export const GridTableHeader = styled.div`
+  display: grid;
+  grid-template-columns: 2fr 2fr 1fr 2fr 1fr 1fr;
+  justify-items: center;
+  width: 80%;
+  margin: 10px;
+  color: #fff;
+  fontweight: bold;
+
+  & > span {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    & > img {
+      width: 20px;
+      cursor: pointer;
+    }
+  }
 `;
 // !------------------------------------
